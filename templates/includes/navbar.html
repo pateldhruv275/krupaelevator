@@ -61,21 +61,16 @@
 
     <!-- Desktop Navigation Links -->
     <div class="collapse navbar-collapse d-none d-xl-flex" id="navbarNav">
-      <ul class="navbar-nav mx-auto mb-2 mb-xl-0">
+      <ul class="navbar-nav mx-auto mb-2 mb-xl-0 align-items-center">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'core:home' %}">Home</a>
-          <a class="nav-link {% if request.path == '/' %}active{% endif %}" {% if request.path == '/' %}aria-current="page"{% endif %} href="{% url 'core:home' %}">Home</a>
+          <a class="nav-link text-nowrap {% if request.path == '/' %}active{% endif %}" {% if request.path == '/' %}aria-current="page"{% endif %} href="{% url 'core:home' %}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#about">About Us</a>
+          <a class="nav-link text-nowrap" href="#about">About Us</a>
         </li>
-        <!-- Products Dropdown (Dynamic from Database) -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="{% url 'products:list' %}" id="navbarProductsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Products
         <!-- Products Dropdown (Dynamic 2-Column Mega Menu) -->
         <li class="nav-item dropdown products-dropdown">
-          <a class="nav-link dropdown-toggle d-inline-flex align-items-center {% if '/products/' in request.path %}active{% endif %}" 
+          <a class="nav-link dropdown-toggle text-nowrap d-inline-flex align-items-center {% if '/products/' in request.path %}active{% endif %}" 
              href="{% url 'products:list' %}" 
              id="navbarProductsDropdown" 
              role="button" 
@@ -84,14 +79,6 @@
             <span>Products</span>
             <i class="bi bi-chevron-down nav-dropdown-chevron ms-1"></i>
           </a>
-          <ul class="dropdown-menu shadow" aria-labelledby="navbarProductsDropdown">
-            <li><a class="dropdown-item fw-bold text-teal border-bottom border-light-subtle pb-2 mb-1" href="{% url 'products:list' %}"><i class="bi bi-grid me-2"></i> All Elevator Products</a></li>
-            {% for cat in navbar_categories %}
-            <li><a class="dropdown-item" href="{{ cat.get_absolute_url }}"><i class="bi {{ cat.icon|default:'bi-layers' }} me-2 text-orange"></i> {{ cat.name }}</a></li>
-            {% empty %}
-            <li><a class="dropdown-item" href="{% url 'products:list' %}">Explore Products</a></li>
-            {% endfor %}
-          </ul>
           <div class="dropdown-menu products-mega-menu shadow-lg" aria-labelledby="navbarProductsDropdown">
             <!-- Header strip -->
             <div class="mega-menu-header d-flex justify-content-between align-items-center px-3 py-2 bg-light-subtle border-bottom border-light-subtle">
@@ -138,31 +125,31 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'core:services' %}">Services</a>
+          <a class="nav-link text-nowrap {% if '/services/' in request.path %}active{% endif %}" href="{% url 'core:services' %}">Services</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'projects:list' %}">Projects</a>
+          <a class="nav-link text-nowrap {% if '/projects/' in request.path %}active{% endif %}" href="{% url 'projects:list' %}">Projects</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'gallery:list' %}">Gallery</a>
+          <a class="nav-link text-nowrap {% if '/gallery/' in request.path %}active{% endif %}" href="{% url 'gallery:list' %}">Gallery</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'core:clients' %}">Clients</a>
+          <a class="nav-link text-nowrap {% if '/clients/' in request.path %}active{% endif %}" href="{% url 'core:clients' %}">Clients</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'blog:list' %}">Blog</a>
+          <a class="nav-link text-nowrap {% if '/blog/' in request.path %}active{% endif %}" href="{% url 'blog:list' %}">Blog</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'careers:list' %}">Careers</a>
+          <a class="nav-link text-nowrap {% if '/careers/' in request.path %}active{% endif %}" href="{% url 'careers:list' %}">Careers</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'enquiries:contact' %}">Contact Us</a>
+          <a class="nav-link text-nowrap {% if '/contact/' in request.path %}active{% endif %}" href="{% url 'enquiries:contact' %}">Contact Us</a>
         </li>
       </ul>
 
       <!-- CTA Action Button -->
-      <div class="d-flex align-items-center">
-        <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold btn-sm">
+      <div class="d-flex align-items-center flex-shrink-0 ms-2">
+        <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold btn-sm text-nowrap">
           <i class="bi bi-calculator"></i> Request A Quote
         </a>
       </div>
@@ -181,15 +168,12 @@
   <div class="offcanvas-body d-flex flex-column justify-content-between">
     <ul class="navbar-nav">
       <li class="nav-item mb-2">
-        <a class="nav-link text-dark active fs-5" href="{% url 'core:home' %}">Home</a>
-        <a class="nav-link text-dark {% if request.path == '/' %}active{% endif %} fs-5" href="{% url 'core:home' %}">Home</a>
+        <a class="nav-link text-dark {% if request.path == '/' %}active text-teal fw-bold{% endif %} fs-5" href="{% url 'core:home' %}">Home</a>
       </li>
       <li class="nav-item mb-2">
         <a class="nav-link text-dark fs-5" href="#about">About Us</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link text-dark fs-5" data-bs-toggle="collapse" href="#mobileProductsCollapse" role="button" aria-expanded="false">
-          Products <i class="bi bi-chevron-down ms-1 fs-6"></i>
         <a class="nav-link text-dark fs-5 mobile-products-toggle d-flex justify-content-between align-items-center {% if '/products/' in request.path %}text-teal fw-bold{% endif %}" 
            data-bs-toggle="collapse" 
            href="#mobileProductsCollapse" 
@@ -198,14 +182,11 @@
           <span>Products</span>
           <i class="bi bi-chevron-down ms-1 fs-6 mobile-chevron"></i>
         </a>
-        <div class="collapse ps-3" id="mobileProductsCollapse">
-          <a class="dropdown-item py-2 text-teal fw-semibold" href="{% url 'products:list' %}"><i class="bi bi-grid me-1"></i> All Products</a>
         <div class="collapse ps-2 {% if '/products/' in request.path %}show{% endif %}" id="mobileProductsCollapse">
           <a class="dropdown-item py-2 text-teal fw-bold border-bottom border-light-subtle mb-1" href="{% url 'products:list' %}">
             <i class="bi bi-grid me-2"></i> All Elevator Products
           </a>
           {% for cat in navbar_categories %}
-          <a class="dropdown-item py-2" href="{{ cat.get_absolute_url }}"><i class="bi {{ cat.icon|default:'bi-layers' }} me-1 text-orange"></i> {{ cat.name }}</a>
           <a class="dropdown-item py-2 d-flex align-items-center {% if request.path == cat.get_absolute_url %}text-teal fw-bold bg-teal-subtle{% endif %}" href="{{ cat.get_absolute_url }}">
             <i class="bi {{ cat.icon|default:'bi-layers' }} me-2 text-orange"></i> {{ cat.name }}
           </a>
@@ -214,13 +195,13 @@
           {% endfor %}
         </div>
       </li>
-      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5" href="{% url 'core:services' %}">Services</a></li>
-      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5" href="{% url 'projects:list' %}">Projects</a></li>
-      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5" href="{% url 'gallery:list' %}">Gallery</a></li>
-      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5" href="{% url 'core:clients' %}">Clients</a></li>
-      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5" href="{% url 'blog:list' %}">Blog</a></li>
-      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5" href="{% url 'careers:list' %}">Careers</a></li>
-      <li class="nav-item mb-3"><a class="nav-link text-dark fs-5" href="{% url 'enquiries:contact' %}">Contact Us</a></li>
+      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5 {% if '/services/' in request.path %}text-teal fw-bold{% endif %}" href="{% url 'core:services' %}">Services</a></li>
+      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5 {% if '/projects/' in request.path %}text-teal fw-bold{% endif %}" href="{% url 'projects:list' %}">Projects</a></li>
+      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5 {% if '/gallery/' in request.path %}text-teal fw-bold{% endif %}" href="{% url 'gallery:list' %}">Gallery</a></li>
+      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5 {% if '/clients/' in request.path %}text-teal fw-bold{% endif %}" href="{% url 'core:clients' %}">Clients</a></li>
+      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5 {% if '/blog/' in request.path %}text-teal fw-bold{% endif %}" href="{% url 'blog:list' %}">Blog</a></li>
+      <li class="nav-item mb-2"><a class="nav-link text-dark fs-5 {% if '/careers/' in request.path %}text-teal fw-bold{% endif %}" href="{% url 'careers:list' %}">Careers</a></li>
+      <li class="nav-item mb-3"><a class="nav-link text-dark fs-5 {% if '/contact/' in request.path %}text-teal fw-bold{% endif %}" href="{% url 'enquiries:contact' %}">Contact Us</a></li>
     </ul>
 
     <div class="mt-4 pt-3 border-top">
