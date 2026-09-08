@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Elevator Industry News, Engineering Guides & Insights | Krupa Elevator{% endblock %}
+
+{% block meta_description %}Explore expert articles, elevator safety compliance guides (IS 14665 / EN-81), MRL and hydraulic engineering insights from Krupa Elevator.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Blog &amp; Insights</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase mb-3">
+          <i class="bi bi-newspaper me-1"></i> Knowledge Hub &amp; Industry Standards
+        </span>
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          Elevator Engineering &amp; Safety Insights
+        </h1>
+        <p class="lead text-secondary mb-0 max-w-600">
+          In-depth technical guides, hoistway civil dimensions, statutory safety norms (IS 14665 / EN-81), and modern vertical mobility trends from our senior engineering team.
+        </p>
+      </div>
+
+      <!-- Search Input Box -->
+      <div class="col-lg-5">
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 shadow-sm">
+          <form action="{% url 'blog:list' %}" method="GET" class="d-flex flex-column gap-2">
+            <label class="text-white fw-semibold small mb-1">
+              <i class="bi bi-search text-warning me-1"></i> Search Technical Articles
+            </label>
+            <div class="input-group">
+              <input type="text" name="q" value="{{ search_query }}" class="form-control bg-black text-white border-secondary border-opacity-50" placeholder="Search guides, safety norms, MRL..." aria-label="Search articles">
+              <button class="btn btn-gold px-4 fw-bold" type="submit">
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </div>
+            {% if search_query %}
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <span class="text-muted small">Showing results for "<strong>{{ search_query }}</strong>"</span>
+              <a href="{% url 'blog:list' %}" class="text-warning small text-decoration-none">Clear search</a>
+            </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Filter Pills Strip -->
+<section class="py-3 bg-dark border-bottom border-secondary border-opacity-25 sticky-top-filter">
+  <div class="container">
+    <div class="d-flex align-items-center gap-2 overflow-x-auto py-2 no-scrollbar">
+      <span class="text-muted small fw-semibold text-nowrap me-2"><i class="bi bi-funnel text-warning"></i> Categories:</span>
+      <a href="{% url 'blog:list' %}" 
+         class="btn btn-sm {% if not selected_category %}btn-gold{% else %}btn-outline-secondary text-light{% endif %} rounded-pill px-3 text-nowrap">
+        All Articles ({{ total_count }})
+      </a>
+      {% for cat in categories %}
+      <a href="{{ cat.get_absolute_url }}" 
+         class="btn btn-sm {% if selected_category.slug == cat.slug %}btn-gold{% else %}btn-outline-secondary text-light{% endif %} rounded-pill px-3 text-nowrap">
+        {{ cat.name }} ({{ cat.post_count }})
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Main Articles Grid -->
+<section class="py-5">
+  <div class="container py-4">
+
+    <!-- Featured Post Spotlight (When Available on Page 1) -->
+    {% if featured_post and not search_query and not selected_category %}
+    <div class="p-4 p-md-5 rounded-4 bg-dark border border-warning border-opacity-35 mb-5 shadow-lg">
+      <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-lg-6">
+          {% if featured_post.featured_image %}
+          <div class="rounded-4 overflow-hidden" style="height: 320px;">
+            <img src="{{ featured_post.featured_image.url }}" alt="{{ featured_post.title }}" class="w-100 h-100 object-fit-cover">
+          </div>
+          {% else %}
+          <div class="rounded-4 bg-black border border-secondary border-opacity-25 d-flex align-items-center justify-content-center" style="height: 320px;">
+            <i class="bi bi-newspaper display-1 text-warning"></i>
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-lg-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase">
+              <i class="bi bi-star-fill me-1"></i> Featured Guide
+            </span>
+            <span class="badge bg-black border border-secondary text-light px-3 py-2">
+              {{ featured_post.category.name }}
+            </span>
+            <span class="text-muted small ms-auto"><i class="bi bi-clock me-1"></i> {{ featured_post.reading_time }} min read</span>
+          </div>
+
+          <h2 class="font-heading text-white fw-bold mb-3 display-6">
+            <a href="{{ featured_post.get_absolute_url }}" class="text-white text-decoration-none hover-gold">{{ featured_post.title }}</a>
+          </h2>
+          <p class="text-secondary fs-6 mb-4" style="line-height: 1.7;">
+            {{ featured_post.summary|truncatewords:35 }}
+          </p>
+          <div class="d-flex align-items-center justify-content-between pt-3 border-top border-secondary border-opacity-25">
+            <span class="text-muted small"><i class="bi bi-calendar3 text-warning me-1"></i> {{ featured_post.published_date|date:"F d, Y" }}</span>
+            <a href="{{ featured_post.get_absolute_url }}" class="btn btn-gold btn-sm">
+              Read Complete Guide <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Articles Grid -->
+    {% if posts %}
+    <div class="row g-4 mb-5">
+      {% for post in posts %}
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card d-flex flex-column justify-content-between h-100 p-0 overflow-hidden">
+          <!-- Article Photo Banner -->
+          <div class="overflow-hidden position-relative" style="height: 200px;">
+            {% if post.featured_image %}
+            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-100 h-100 object-fit-cover hover-scale" loading="lazy">
+            {% else %}
+            <div class="w-100 h-100 bg-black d-flex align-items-center justify-content-center text-muted">
+              <i class="bi bi-file-earmark-richtext display-3 text-secondary"></i>
+            </div>
+            {% endif %}
+            <span class="badge bg-black bg-opacity-75 text-warning border border-secondary position-absolute top-0 start-0 m-3">
+              {{ post.category.name }}
+            </span>
+          </div>
+
+          <!-- Card Body -->
+          <div class="p-4 d-flex flex-column flex-grow-1 justify-content-between">
+            <div>
+              <div class="d-flex justify-content-between align-items-center text-muted small mb-2">
+                <span><i class="bi bi-calendar-event me-1 text-warning"></i> {{ post.published_date|date:"M d, Y" }}</span>
+                <span><i class="bi bi-clock me-1 text-warning"></i> {{ post.reading_time }} min read</span>
+              </div>
+              <h5 class="text-white fw-bold mb-2">
+                <a href="{{ post.get_absolute_url }}" class="text-white text-decoration-none hover-gold">{{ post.title }}</a>
+              </h5>
+              <p class="text-muted small mb-3">{{ post.summary|truncatewords:20 }}</p>
+            </div>
+
+            <div class="pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+              <span class="text-muted small"><i class="bi bi-person text-warning me-1"></i> {{ post.author }}</span>
+              <a href="{{ post.get_absolute_url }}" class="text-warning small fw-bold text-decoration-none hover-gold">
+                Read Article &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    {% if page_obj.has_other_pages %}
+    <nav aria-label="Blog pagination" class="mt-4">
+      <ul class="pagination justify-content-center gap-2">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link bg-dark text-white border-secondary rounded" 
+             href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}">
+            <i class="bi bi-chevron-left"></i> Previous
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link bg-dark text-muted border-secondary rounded"><i class="bi bi-chevron-left"></i> Previous</span>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+          <li class="page-item active">
+            <span class="page-link bg-warning text-dark border-warning fw-bold rounded">{{ num }}</span>
+          </li>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li class="page-item">
+            <a class="page-link bg-dark text-white border-secondary rounded" 
+               href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}">{{ num }}</a>
+          </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link bg-dark text-white border-secondary rounded" 
+             href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}">
+            Next <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link bg-dark text-muted border-secondary rounded">Next <i class="bi bi-chevron-right"></i></span>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-5 bg-dark rounded-4 border border-secondary border-opacity-25 p-5">
+      <i class="bi bi-journal-x text-warning display-1 mb-3 d-block"></i>
+      <h3 class="font-heading text-white fw-bold mb-2">No Articles Found</h3>
+      <p class="text-muted max-w-500 mx-auto mb-4">
+        {% if search_query %}
+        No blog posts matched your search query "<strong>{{ search_query }}</strong>".
+        {% else %}
+        There are currently no published articles in this category.
+        {% endif %}
+      </p>
+      <a href="{% url 'blog:list' %}" class="btn btn-gold">
+        <i class="bi bi-arrow-left me-1"></i> View All Articles
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- Quotation CTA Banner -->
+<section class="py-5 bg-black bg-opacity-50 border-top border-secondary border-opacity-10">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">
+            <i class="bi bi-calculator me-1"></i> Need Technical Specifications?
+          </span>
+          <h2 class="font-heading text-white display-6 fw-bold mb-3">
+            Looking for Shaft Clearance Calculations for Your Blueprints?
+          </h2>
+          <p class="text-secondary fs-5 mb-0">
+            Our estimating team calculates exact machine room-less dimensions, pit depths, and electrical loads for architects and builders.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold btn-lg shadow">
+            <i class="bi bi-envelope-check-fill me-1"></i> Request Official Proposal
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

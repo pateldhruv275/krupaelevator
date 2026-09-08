@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Request An Elevator Quotation | Krupa Elevator{% endblock %}
+
+{% block meta_description %}Get a free, detailed elevator price quote and structural hoistway clearance analysis for your residential, commercial, or hospital project from Krupa Elevator.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Request A Quote</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase mb-3">
+          <i class="bi bi-calculator me-1"></i> Engineering Estimating Desk
+        </span>
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          Request An Elevator Quotation
+        </h1>
+        <p class="lead text-secondary mb-0 max-w-700">
+          Complete the project specification sheet below. Our senior estimating engineers will review your hoistway parameters, calculate shaft load calculations, and email an official turnkey proposal within 24 hours.
+        </p>
+      </div>
+
+      <div class="col-lg-4 text-lg-end">
+        <div class="p-3 rounded-4 bg-dark border border-secondary border-opacity-25 d-inline-block text-start">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <i class="bi bi-clock-history text-warning fs-3"></i>
+            <div>
+              <span class="text-white fw-bold d-block">Guaranteed Fast Response</span>
+              <span class="text-muted small">Proposal ready within 24 business hours</span>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-telephone-inbound text-warning fs-3"></i>
+            <div>
+              <span class="text-white fw-bold d-block">Need Instant Assistance?</span>
+              <a href="tel:{{ site_settings.phone }}" class="text-warning text-decoration-none small fw-bold">{{ site_settings.phone }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust Highlights Strip -->
+<section class="py-3 bg-white border-bottom border-light-subtle shadow-sm">
+  <div class="container">
+    <div class="row g-3 text-center text-md-start">
+      <div class="col-md-3 col-6">
+        <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+          <i class="bi bi-shield-check text-warning fs-4"></i>
+          <span class="text-dark small fw-semibold">ISO 9001:2015 &amp; EN-81 Compliant</span>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+          <i class="bi bi-rulers text-warning fs-4"></i>
+          <span class="text-dark small fw-semibold">Free Laser Hoistway Survey</span>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+          <i class="bi bi-file-earmark-pdf text-warning fs-4"></i>
+          <span class="text-dark small fw-semibold">Complete 2D/3D Shaft Drawings</span>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+          <i class="bi bi-lightning-charge text-warning fs-4"></i>
+          <span class="text-dark small fw-semibold">Energy-Saving V3F Drives</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Quotation Form Section -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="row g-5">
+      <!-- Left Column: Guidance & Direct Contacts -->
+      <div class="col-lg-4 order-2 order-lg-1">
+        <div class="position-sticky" style="top: 100px;">
+          <!-- Information Card -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-4">
+            <h5 class="font-heading text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+              <i class="bi bi-info-circle text-warning me-2"></i> How We Process Your Quote
+            </h5>
+            <div class="d-flex flex-column gap-3 small">
+              <div class="d-flex gap-3">
+                <span class="badge bg-warning text-dark fw-bold rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">1</span>
+                <div>
+                  <strong class="text-white d-block">Specification Review</strong>
+                  <span class="text-muted">Our structural engineers analyze your floor stops, shaft cross-section, and payload needs.</span>
+                </div>
+              </div>
+              <div class="d-flex gap-3">
+                <span class="badge bg-warning text-dark fw-bold rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">2</span>
+                <div>
+                  <strong class="text-white d-block">Drive &amp; Machine Sizing</strong>
+                  <span class="text-muted">We compute motor KW ratings, PMSM gearless speeds, and energy consumption metrics.</span>
+                </div>
+              </div>
+              <div class="d-flex gap-3">
+                <span class="badge bg-warning text-dark fw-bold rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">3</span>
+                <div>
+                  <strong class="text-white d-block">Formal Commercial Offer</strong>
+                  <span class="text-muted">You receive a breakdown covering supply, erection, testing, commissioning, warranty, and AMC.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Direct Helpline Card -->
+          <div class="p-4 rounded-4 bg-black border border-warning border-opacity-35 mb-4">
+            <span class="badge bg-warning text-dark fw-bold px-2 py-1 small mb-2">Technical Sales Hotline</span>
+            <h5 class="text-white fw-bold mb-2">Speak Directly With An Engineer</h5>
+            <p class="text-muted small mb-3">
+              If your blueprints are ready or you require an urgent site survey, reach our engineering desk directly:
+            </p>
+            <div class="d-flex flex-column gap-2">
+              <a href="tel:{{ site_settings.phone }}" class="btn btn-gold w-100 fw-bold">
+                <i class="bi bi-telephone-fill me-1"></i> {{ site_settings.phone }}
+              </a>
+              {% if site_settings.whatsapp %}
+              <a href="https://wa.me/{{ site_settings.whatsapp }}?text=Hello%20Krupa%20Elevator%20Engineering%20Team%2C%20I%20would%20like%20to%20request%20a%20quotation." 
+                 target="_blank" 
+                 rel="noopener" 
+                 class="btn btn-outline-success w-100">
+                <i class="bi bi-whatsapp me-1"></i> Send Drawings on WhatsApp
+              </a>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Corporate Office Address Summary -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25">
+            <h6 class="text-white fw-bold mb-2"><i class="bi bi-geo-alt text-warning me-1"></i> Factory &amp; Engineering Headquarters</h6>
+            <p class="text-muted small mb-1">{{ site_settings.address }}</p>
+            <p class="text-muted small mb-0"><i class="bi bi-envelope text-warning me-1"></i> {{ site_settings.email }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Quotation Form -->
+      <div class="col-lg-8 order-1 order-lg-2">
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-secondary border-opacity-25 shadow-lg">
+          <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+            <div>
+              <h3 class="font-heading text-white fw-bold mb-1">Project Specification Sheet</h3>
+              <p class="text-muted small mb-0">Fields marked with an asterisk (<span class="text-warning">*</span>) are mandatory.</p>
+            </div>
+            <i class="bi bi-clipboard2-check text-warning display-6 d-none d-sm-block"></i>
+          </div>
+
+          <form action="{% url 'enquiries:quote_request' %}" method="POST" novalidate>
+            {% csrf_token %}
+
+            <!-- Section 1: Contact Details -->
+            <div class="mb-4">
+              <h5 class="text-warning fw-semibold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-person-badge"></i> 1. Contact &amp; Organization Details
+              </h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Customer / Contact Person Name <span class="text-warning">*</span></label>
+                  {{ form.customer_name }}
+                  {% if form.customer_name.errors %}
+                  <div class="text-danger small mt-1">{{ form.customer_name.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Company / Developer / Architecture Firm</label>
+                  {{ form.company_name }}
+                  {% if form.company_name.errors %}
+                  <div class="text-danger small mt-1">{{ form.company_name.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Primary Mobile / Telephone <span class="text-warning">*</span></label>
+                  {{ form.phone }}
+                  {% if form.phone.errors %}
+                  <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Official Email (For Quotation PDF) <span class="text-warning">*</span></label>
+                  {{ form.email }}
+                  {% if form.email.errors %}
+                  <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Project Location & Building Parameters -->
+            <div class="mb-4 pt-3 border-top border-secondary border-opacity-25">
+              <h5 class="text-warning fw-semibold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-building"></i> 2. Project Site &amp; Building Structure
+              </h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">City / Project District <span class="text-warning">*</span></label>
+                  {{ form.city }}
+                  {% if form.city.errors %}
+                  <div class="text-danger small mt-1">{{ form.city.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Site Locality / Address</label>
+                  {{ form.project_location }}
+                  {% if form.project_location.errors %}
+                  <div class="text-danger small mt-1">{{ form.project_location.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Building Structure Type <span class="text-warning">*</span></label>
+                  {{ form.building_type }}
+                  {% if form.building_type.errors %}
+                  <div class="text-danger small mt-1">{{ form.building_type.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Number of Floors / Stops <span class="text-warning">*</span></label>
+                  {{ form.number_of_floors }}
+                  <div class="form-text text-muted" style="font-size: 0.75rem;">e.g., G+4 Floors, 10 Stops, Ground + 2</div>
+                  {% if form.number_of_floors.errors %}
+                  <div class="text-danger small mt-1">{{ form.number_of_floors.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Elevator Technical Specifications -->
+            <div class="mb-4 pt-3 border-top border-secondary border-opacity-25">
+              <h5 class="text-warning fw-semibold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-layers-half"></i> 3. Elevator System Requirements
+              </h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Elevator Type Required <span class="text-warning">*</span></label>
+                  {{ form.elevator_type }}
+                  {% if form.elevator_type.errors %}
+                  <div class="text-danger small mt-1">{{ form.elevator_type.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Capacity Required / Passenger Size</label>
+                  {{ form.capacity_required }}
+                  <div class="form-text text-muted" style="font-size: 0.75rem;">e.g. 6 Pass (408 kg), 8 Pass (544 kg), 1000 kg Bed Lift</div>
+                  {% if form.capacity_required.errors %}
+                  <div class="text-danger small mt-1">{{ form.capacity_required.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Total Number of Elevator Units <span class="text-warning">*</span></label>
+                  {{ form.number_of_elevators }}
+                  {% if form.number_of_elevators.errors %}
+                  <div class="text-danger small mt-1">{{ form.number_of_elevators.errors.0 }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-dark fw-semibold small">Current Project Construction Stage</label>
+                  {{ form.project_stage }}
+                  {% if form.project_stage.errors %}
+                  <div class="text-danger small mt-1">{{ form.project_stage.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 4: Remarks / Special Requirements -->
+            <div class="mb-4 pt-3 border-top border-secondary border-opacity-25">
+              <h5 class="text-warning fw-semibold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-chat-left-text"></i> 4. Specific Requirements / Shaft Blueprints
+              </h5>
+              <div class="mb-3">
+                <label class="form-label text-dark fw-semibold small">Architectural Notes, Shaft Dimensions, Preferred Finishes or Remarks</label>
+                {{ form.message }}
+                {% if form.message.errors %}
+                <div class="text-danger small mt-1">{{ form.message.errors.0 }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Submit CTA -->
+            <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
+              <button type="submit" class="btn btn-gold btn-lg w-100 py-3 fw-bold shadow">
+                <i class="bi bi-send-fill me-2"></i> Submit Quotation Request
+              </button>
+              <div class="d-flex flex-wrap justify-content-between align-items-center text-muted small mt-3">
+                <span><i class="bi bi-shield-lock-fill text-warning me-1"></i> Your technical information is 100% confidential.</span>
+                <span><i class="bi bi-check2-circle text-warning me-1"></i> No spam. Formal PDF quotation only.</span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

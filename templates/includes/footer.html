@@ -1,0 +1,116 @@
+{% load static %}
+<footer class="main-footer">
+  <div class="container">
+    <div class="row g-4 g-lg-5">
+      <!-- Col 1: Corporate Overview -->
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-brand mb-3">
+          {% if site_settings.logo %}
+            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.company_name }}" height="48" class="mb-3">
+          {% else %}
+            <img src="{% static 'images/krupa_logo_dark.png' %}" alt="Krupa Elevator" height="46" class="mb-3">
+          {% endif %}
+        </div>
+        <p class="text-muted mb-4 pe-lg-3">
+          {{ site_settings.footer_description|default:"Precision engineered vertical mobility systems tailored for residential, commercial, industrial, and healthcare environments with relentless focus on passenger safety and uptime." }}
+        </p>
+        <div class="d-flex gap-2">
+          {% if site_settings.facebook %}
+            <a href="{{ site_settings.facebook }}" target="_blank" rel="noopener" class="social-pill" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          {% endif %}
+          {% if site_settings.instagram %}
+            <a href="{{ site_settings.instagram }}" target="_blank" rel="noopener" class="social-pill" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          {% endif %}
+          {% if site_settings.linkedin %}
+            <a href="{{ site_settings.linkedin }}" target="_blank" rel="noopener" class="social-pill" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          {% endif %}
+          {% if site_settings.youtube %}
+            <a href="{{ site_settings.youtube }}" target="_blank" rel="noopener" class="social-pill" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          {% endif %}
+          {% if site_settings.twitter %}
+            <a href="{{ site_settings.twitter }}" target="_blank" rel="noopener" class="social-pill" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Col 2: Elevator Solutions -->
+      <div class="col-lg-2 col-md-6 col-6">
+        <h5 class="footer-widget-title">Solutions</h5>
+        <ul class="footer-links">
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> Passenger Lifts</a></li>
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> Home Elevators</a></li>
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> Hospital Elevators</a></li>
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> Freight / Goods Lifts</a></li>
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> Panoramic Glass</a></li>
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> MRL Elevators</a></li>
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> Hydraulic Lifts</a></li>
+          <li><a href="#products"><i class="bi bi-chevron-right text-warning small"></i> Dumbwaiters</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Company Links -->
+      <div class="col-lg-2 col-md-6 col-6">
+        <h5 class="footer-widget-title">Company</h5>
+        <ul class="footer-links">
+          <li><a href="#about"><i class="bi bi-chevron-right text-warning small"></i> About Us</a></li>
+          <li><a href="{% url 'core:services' %}"><i class="bi bi-chevron-right text-warning small"></i> Services & AMC</a></li>
+          <li><a href="{% url 'projects:list' %}"><i class="bi bi-chevron-right text-warning small"></i> Completed Projects</a></li>
+          <li><a href="{% url 'gallery:list' %}"><i class="bi bi-chevron-right text-warning small"></i> Photo Gallery</a></li>
+          <li><a href="{% url 'core:clients' %}"><i class="bi bi-chevron-right text-warning small"></i> Our Clients</a></li>
+          <li><a href="{% url 'blog:list' %}"><i class="bi bi-chevron-right text-warning small"></i> Industry News &amp; Blog</a></li>
+          <li><a href="{% url 'careers:list' %}"><i class="bi bi-chevron-right text-warning small"></i> Careers &amp; Openings</a></li>
+          <li><a href="{% url 'enquiries:contact' %}"><i class="bi bi-chevron-right text-warning small"></i> Contact Support</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Corporate Headquarters -->
+      <div class="col-lg-4 col-md-6">
+        <h5 class="footer-widget-title">Contact & Support</h5>
+        <div class="d-flex flex-column gap-3">
+          {% if site_settings.address %}
+          <div class="d-flex gap-3">
+            <i class="bi bi-geo-alt text-warning fs-5 flex-shrink-0"></i>
+            <span class="text-muted">{{ site_settings.address }}</span>
+          </div>
+          {% endif %}
+
+          <div class="d-flex gap-3">
+            <i class="bi bi-telephone text-warning fs-5 flex-shrink-0"></i>
+            <div>
+              <a href="tel:{{ site_settings.phone }}" class="d-block text-white fw-bold">{{ site_settings.phone }}</a>
+              {% if site_settings.alternate_phone %}
+              <a href="tel:{{ site_settings.alternate_phone }}" class="d-block text-muted small">{{ site_settings.alternate_phone }}</a>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if site_settings.email %}
+          <div class="d-flex gap-3">
+            <i class="bi bi-envelope text-warning fs-5 flex-shrink-0"></i>
+            <a href="mailto:{{ site_settings.email }}" class="text-muted">{{ site_settings.email }}</a>
+          </div>
+          {% endif %}
+
+          {% if site_settings.working_hours %}
+          <div class="d-flex gap-3">
+            <i class="bi bi-clock-history text-warning fs-5 flex-shrink-0"></i>
+            <span class="text-muted small">{{ site_settings.working_hours }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Copyright -->
+    <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <p class="mb-0">
+        &copy; {{ current_year }} <strong>{{ site_settings.company_name|default:"Krupa Elevator" }}</strong>. All Rights Reserved.
+      </p>
+      <div class="d-flex gap-4">
+        <a href="#privacy" class="text-muted small">Privacy Policy</a>
+        <a href="#terms" class="text-muted small">Terms of Service</a>
+        <a href="#sitemap" class="text-muted small">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>

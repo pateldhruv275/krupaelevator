@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Elevator Photo Gallery & Project Installations | {{ site_settings.company_name|default:"Krupa Elevator" }}{% endblock %}
+
+{% block meta_description %}High-resolution photographs of Krupa Elevator installations, luxury cabin interiors, panoramic glass lifts, and industrial freight systems.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Photo Gallery</li>
+      </ol>
+    </nav>
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="section-tag"><i class="bi bi-images"></i> Visual Showcase</span>
+        <h1 class="display-5 font-heading text-white fw-bold mb-3">
+          Elevator Installations & Architecture Gallery
+        </h1>
+        <p class="text-muted fs-5 mb-0">
+          Explore photographs of our bespoke titanium gold cabin interiors, architectural panoramic curved glass lifts, and high-capacity industrial installations.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+        <span class="badge bg-warning text-dark fs-6 px-3 py-2 fw-bold">
+          <i class="bi bi-camera-fill me-1"></i> {{ total_count }} Photographs Available
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Filter Pills -->
+<section class="py-4 bg-dark bg-opacity-50 border-bottom border-secondary border-opacity-10 sticky-top" style="top: 72px; z-index: 10;">
+  <div class="container">
+    <div class="d-flex gap-2 overflow-x-auto pb-2 pb-lg-0" style="scrollbar-width: thin;">
+      <a href="{% url 'gallery:list' %}" class="btn btn-sm {% if not selected_category_slug %}btn-gold{% else %}btn-outline-secondary text-light{% endif %} rounded-pill px-3 text-nowrap">
+        All Photographs
+      </a>
+      {% for cat in categories %}
+      <a href="{% url 'gallery:list' %}?category={{ cat.slug }}" 
+         class="btn btn-sm {% if selected_category_slug == cat.slug %}btn-gold{% else %}btn-outline-secondary text-light{% endif %} rounded-pill px-3 text-nowrap">
+        {{ cat.name }} ({{ cat.image_count }})
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Grid Section -->
+<section class="py-5">
+  <div class="container py-4">
+    {% if images %}
+    <div class="row g-4" id="galleryGrid">
+      {% for img in images %}
+      <div class="col-lg-4 col-md-6 gallery-item" 
+           data-title="{{ img.title }}" 
+           data-src="{% if img.image %}{{ img.image.url }}{% endif %}" 
+           data-category="{{ img.category.name }}"
+           data-description="{{ img.description|default:'' }}">
+        <div class="feature-card p-0 rounded-4 overflow-hidden position-relative h-100 cursor-pointer gallery-card">
+          <div class="overflow-hidden position-relative" style="height: 280px;">
+            {% if img.image %}
+            <img src="{{ img.image.url }}" alt="{{ img.title }}" class="w-100 h-100 object-fit-cover gallery-thumb" loading="lazy">
+            {% else %}
+            <div class="w-100 h-100 bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center text-muted">
+              <i class="bi bi-image fs-1"></i>
+            </div>
+            {% endif %}
+            <div class="gallery-hover-overlay">
+              <div class="text-center p-3">
+                <i class="bi bi-zoom-in text-warning fs-1 mb-2 d-block"></i>
+                <span class="badge bg-black bg-opacity-75 text-warning border border-secondary mb-2">{{ img.category.name }}</span>
+                <h5 class="text-white fw-bold mb-1">{{ img.title }}</h5>
+                <span class="text-secondary small">Click to enlarge</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 bg-dark border-top border-secondary border-opacity-25">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-white fw-semibold small text-truncate">{{ img.title }}</span>
+              <span class="badge bg-black text-warning small">{{ img.category.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-5 my-5 bg-dark bg-opacity-25 rounded-4 border border-secondary border-opacity-25 p-5">
+      <i class="bi bi-images text-warning display-3 mb-3 d-block"></i>
+      <h3 class="text-white fw-bold mb-2">No Photographs in this Category</h3>
+      <p class="text-muted max-w-500 mx-auto mb-4">
+        Photos are regularly updated from our active installation sites. Choose another category above.
+      </p>
+      <a href="{% url 'gallery:list' %}" class="btn btn-gold">
+        <i class="bi bi-arrow-counterclockwise"></i> View All Photographs
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div class="modal fade" id="galleryLightboxModal" tabindex="-1" aria-labelledby="galleryLightboxLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-black text-white border border-secondary border-opacity-50 shadow-2xl">
+      <div class="modal-header border-bottom border-secondary border-opacity-25 py-2 px-3">
+        <div class="d-flex align-items-center gap-2">
+          <span id="modalCategoryBadge" class="badge bg-warning text-dark fw-bold"></span>
+          <h5 class="modal-title font-heading text-white fw-bold fs-6 mb-0" id="galleryLightboxLabel"></h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0 position-relative text-center bg-black d-flex align-items-center justify-content-center" style="min-height: 480px; max-height: 75vh;">
+        <img id="lightboxImage" src="" alt="" class="img-fluid" style="max-height: 70vh; max-width: 95%; object-fit: contain;">
+        
+        <!-- Navigation Arrows inside Lightbox -->
+        <button id="lightboxPrev" class="btn btn-dark bg-opacity-75 text-white border-secondary position-absolute start-0 top-50 translate-middle-y m-3 rounded-circle" style="width: 48px; height: 48px;" aria-label="Previous image">
+          <i class="bi bi-chevron-left fs-4"></i>
+        </button>
+        <button id="lightboxNext" class="btn btn-dark bg-opacity-75 text-white border-secondary position-absolute end-0 top-50 translate-middle-y m-3 rounded-circle" style="width: 48px; height: 48px;" aria-label="Next image">
+          <i class="bi bi-chevron-right fs-4"></i>
+        </button>
+      </div>
+      <div class="modal-footer border-top border-secondary border-opacity-25 justify-content-between py-2 px-3">
+        <p id="lightboxDescription" class="text-muted small mb-0 text-start"></p>
+        <span id="lightboxIndexIndicator" class="text-warning small fw-bold"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.gallery-card {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.gallery-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.gallery-thumb {
+  transition: transform 0.5s ease;
+}
+.gallery-card:hover .gallery-thumb {
+  transform: scale(1.08);
+}
+.gallery-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 9, 11, 0.75);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.gallery-card:hover .gallery-hover-overlay {
+  opacity: 1;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+  const lightboxModalEl = document.getElementById('galleryLightboxModal');
+  if (!lightboxModalEl || galleryItems.length === 0) return;
+
+  const lightboxModal = new bootstrap.Modal(lightboxModalEl);
+  const modalImage = document.getElementById('lightboxImage');
+  const modalTitle = document.getElementById('galleryLightboxLabel');
+  const modalCategory = document.getElementById('modalCategoryBadge');
+  const modalDesc = document.getElementById('lightboxDescription');
+  const modalIndex = document.getElementById('lightboxIndexIndicator');
+  const btnPrev = document.getElementById('lightboxPrev');
+  const btnNext = document.getElementById('lightboxNext');
+
+  let currentIndex = 0;
+
+  const updateModalContent = (index) => {
+    if (index < 0) index = galleryItems.length - 1;
+    if (index >= galleryItems.length) index = 0;
+    currentIndex = index;
+
+    const item = galleryItems[currentIndex];
+    const src = item.getAttribute('data-src');
+    const title = item.getAttribute('data-title');
+    const cat = item.getAttribute('data-category');
+    const desc = item.getAttribute('data-description');
+
+    modalImage.src = src;
+    modalImage.alt = title;
+    modalTitle.textContent = title;
+    modalCategory.textContent = cat;
+    modalDesc.textContent = desc || title;
+    modalIndex.textContent = `${currentIndex + 1} / ${galleryItems.length}`;
+  };
+
+  galleryItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      updateModalContent(index);
+      lightboxModal.show();
+    });
+  });
+
+  btnPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateModalContent(currentIndex - 1);
+  });
+
+  btnNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateModalContent(currentIndex + 1);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (lightboxModalEl.classList.contains('show')) {
+      if (e.key === 'ArrowLeft') {
+        updateModalContent(currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        updateModalContent(currentIndex + 1);
+      }
+    }
+  });
+});
+</script>
+{% endblock %}

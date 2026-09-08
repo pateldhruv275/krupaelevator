@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ service.meta_title|default:service.title }} | {{ site_settings.company_name|default:"Krupa Elevator" }}{% endblock %}
+
+{% block meta_description %}{{ service.meta_description|default:service.short_description|default:service.description|truncatewords:25 }}{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner"
+         {% if service.image %}style="background: linear-gradient(90deg, rgba(7,10,18,0.95) 0%, rgba(14,21,38,0.85) 100%), url('{{ service.image.url }}') center/cover;"{% endif %}>
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'core:services' %}">Services & AMC</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">{{ service.title }}</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <div class="d-inline-flex align-items-center gap-2 mb-3">
+          <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase">
+            <i class="bi {{ service.icon|default:'bi-tools' }} me-1"></i> Certified Elevator Engineering
+          </span>
+        </div>
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          {{ service.title }}
+        </h1>
+        <p class="lead text-light mb-4">
+          {{ service.short_description|default:service.description|truncatewords:25 }}
+        </p>
+        <div class="d-flex gap-3">
+          <a href="#serviceQuote" class="btn btn-gold btn-lg">
+            <i class="bi bi-calculator me-1"></i> Request Proposal / AMC Quote
+          </a>
+          <a href="tel:{{ site_settings.phone }}" class="btn btn-outline-gold btn-lg">
+            <i class="bi bi-telephone me-1"></i> Speak with Engineer
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center d-none d-lg-block">
+        <div class="p-4 rounded-4 bg-dark bg-opacity-75 border border-secondary border-opacity-25 d-inline-block">
+          <i class="bi {{ service.icon|default:'bi-tools' }} text-warning display-1"></i>
+          <span class="d-block text-white fw-bold mt-2">Krupa Standards Compliant</span>
+          <span class="text-muted small">IS 14665 & EN-81 Quality Certified</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Service Content & Scope of Work -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="row g-5">
+      <!-- Left: In-depth Service Details -->
+      <div class="col-lg-8">
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-secondary border-opacity-25 mb-5">
+          <h3 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-file-earmark-text text-warning"></i> Service Overview & Engineering Methodology
+          </h3>
+          <div class="text-secondary fs-5 mb-4" style="line-height: 1.8;">
+            {{ service.description|linebreaks }}
+          </div>
+
+          {% if features_list %}
+          <h4 class="font-heading text-white fw-bold mb-3 mt-5 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center gap-2">
+            <i class="bi bi-card-checklist text-warning"></i> Detailed Scope of Work & Deliverables
+          </h4>
+          <div class="row g-3">
+            {% for item in features_list %}
+            <div class="col-md-6">
+              <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-10 d-flex align-items-start gap-3 h-100">
+                <i class="bi bi-check-circle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+                <span class="text-light small">{{ item }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Service Quote Form Anchor -->
+        <div id="serviceQuote" class="p-4 p-md-5 rounded-4 bg-white border border-light-subtle shadow-sm">
+          <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">
+            <i class="bi bi-calculator me-1"></i> Get An Inspection or AMC Estimate
+          </span>
+          <h3 class="font-heading text-dark fw-bold mb-2">Request Service for {{ service.title }}</h3>
+          <p class="text-muted small mb-4">Provide details regarding your building, elevator make, number of stops, or current issue.</p>
+
+          <form action="{% url 'core:home' %}#contact" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="service_type" value="{{ service.title }}">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Your Name <span class="text-warning">*</span></label>
+                <input type="text" class="form-control" placeholder="e.g. Ramesh Patel" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Contact Phone <span class="text-warning">*</span></label>
+                <input type="tel" class="form-control" placeholder="+91 98765 43210" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Email Address</label>
+                <input type="email" class="form-control" placeholder="name@company.com">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Building / Site City <span class="text-warning">*</span></label>
+                <input type="text" class="form-control" placeholder="e.g. Ahmedabad, Surat" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label text-dark fw-semibold small">Elevator Details & Requirement</label>
+                <textarea class="form-control" rows="3" placeholder="Describe the number of elevators, floor count, current AMC status, or breakdown issues..."></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-gold w-100 py-3 fw-bold">
+                  <i class="bi bi-send-fill me-2"></i> Submit Service Request
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right: Sidebar & Other Services Navigator -->
+      <div class="col-lg-4">
+        <div class="position-sticky" style="top: 100px;">
+          <!-- Emergency Contact Widget -->
+          <div class="p-4 rounded-4 bg-dark border border-danger border-opacity-35 mb-4 text-center">
+            <i class="bi bi-telephone-inbound-fill text-danger display-5 mb-2 d-block"></i>
+            <h5 class="text-white fw-bold mb-1">24x7 Breakdown Emergency</h5>
+            <p class="text-muted small mb-3">Rapid technical squad dispatched for entrapments and urgent breakdowns.</p>
+            <a href="tel:{{ site_settings.emergency_helpline|default:site_settings.phone }}" class="btn btn-danger w-100 fw-bold">
+              {{ site_settings.emergency_helpline|default:site_settings.phone }}
+            </a>
+          </div>
+
+          <!-- Other Services Menu -->
+          {% if all_services %}
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25">
+            <h5 class="font-heading text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+              <i class="bi bi-gear-wide-connected text-warning me-2"></i> Other Services
+            </h5>
+            <div class="d-flex flex-column gap-2">
+              {% for other in all_services %}
+              <a href="{{ other.get_absolute_url }}" class="p-2 rounded bg-black bg-opacity-50 border border-secondary border-opacity-10 d-flex align-items-center justify-content-between text-decoration-none text-light hover-gold">
+                <span class="small"><i class="bi {{ other.icon|default:'bi-tools' }} text-warning me-2"></i> {{ other.title }}</span>
+                <i class="bi bi-chevron-right small text-muted"></i>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ job.title }} - Careers at Krupa Elevator | {{ job.location }}{% endblock %}
+
+{% block meta_description %}Apply for the {{ job.title }} position at Krupa Elevator in {{ job.location }}. Experience: {{ job.experience_required }}. Submit your CV online.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'careers:list' %}">Careers</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">{{ job.title }}</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+          <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase">
+            {{ job.department }}
+          </span>
+          <span class="badge bg-dark border border-secondary text-light px-3 py-2">
+            <i class="bi bi-geo-alt text-warning me-1"></i> {{ job.location }}
+          </span>
+          <span class="badge bg-dark border border-secondary text-light px-3 py-2">
+            <i class="bi bi-briefcase text-warning me-1"></i> {{ job.employment_type }}
+          </span>
+          {% if job.is_urgent %}
+          <span class="badge bg-danger text-white px-3 py-2 fw-bold">
+            <i class="bi bi-lightning-fill me-1"></i> Urgent Hiring
+          </span>
+          {% endif %}
+        </div>
+
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          {{ job.title }}
+        </h1>
+        <p class="lead text-secondary mb-0">
+          Location: <strong class="text-white">{{ job.location }}</strong> &bull; Experience: <strong class="text-white">{{ job.experience_required }}</strong>
+        </p>
+      </div>
+
+      <div class="col-lg-4 text-lg-end">
+        <a href="#applyForm" class="btn btn-gold btn-lg shadow">
+          <i class="bi bi-send-fill me-1"></i> Apply For This Position
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Job Content & Application Form Section -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="row g-5">
+      <!-- Left Column: Job Details & Application Form -->
+      <div class="col-lg-8">
+        <!-- Role Description -->
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-secondary border-opacity-25 mb-5">
+          <h3 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-info-circle text-warning"></i> Role Overview &amp; Context
+          </h3>
+          <div class="text-secondary fs-5" style="line-height: 1.8;">
+            {{ job.description|linebreaks }}
+          </div>
+
+          <!-- Responsibilities Checklist -->
+          {% if responsibilities %}
+          <h4 class="font-heading text-white fw-bold mb-3 mt-5 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center gap-2">
+            <i class="bi bi-card-checklist text-warning"></i> Key Responsibilities
+          </h4>
+          <div class="d-flex flex-column gap-2 mb-4">
+            {% for resp in responsibilities %}
+            <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-10 d-flex align-items-start gap-3">
+              <i class="bi bi-check2-circle text-warning fs-5 flex-shrink-0 mt-1"></i>
+              <span class="text-light small">{{ resp }}</span>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Requirements Checklist -->
+          {% if requirements %}
+          <h4 class="font-heading text-white fw-bold mb-3 mt-4 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center gap-2">
+            <i class="bi bi-award text-warning"></i> Skills &amp; Profile Requirements
+          </h4>
+          <div class="d-flex flex-column gap-2 mb-4">
+            {% for req in requirements %}
+            <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-10 d-flex align-items-start gap-3">
+              <i class="bi bi-arrow-right-circle text-warning fs-5 flex-shrink-0 mt-1"></i>
+              <span class="text-light small">{{ req }}</span>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Benefits Checklist -->
+          {% if benefits %}
+          <h4 class="font-heading text-white fw-bold mb-3 mt-4 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center gap-2">
+            <i class="bi bi-gift text-warning"></i> What We Offer
+          </h4>
+          <div class="row g-2">
+            {% for ben in benefits %}
+            <div class="col-md-6">
+              <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-10 d-flex align-items-center gap-2 h-100">
+                <i class="bi bi-star-fill text-warning flex-shrink-0"></i>
+                <span class="text-light small">{{ ben }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Embedded Job Application Form Anchor -->
+        <div id="applyForm" class="p-4 p-md-5 rounded-4 bg-dark border border-warning border-opacity-35 shadow-lg">
+          <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+            <div>
+              <span class="badge bg-warning text-dark fw-bold px-3 py-1 text-uppercase mb-2">Apply Online</span>
+              <h3 class="font-heading text-white fw-bold mb-1">Submit Application for {{ job.title }}</h3>
+              <p class="text-muted small mb-0">Complete your candidate details and upload your latest resume (PDF/DOCX).</p>
+            </div>
+            <i class="bi bi-file-earmark-person text-warning display-5 d-none d-sm-block"></i>
+          </div>
+
+          <form action="{% url 'careers:detail' slug=job.slug %}" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Full Name <span class="text-warning">*</span></label>
+                {{ form.applicant_name }}
+                {% if form.applicant_name.errors %}
+                <div class="text-danger small mt-1">{{ form.applicant_name.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Email Address <span class="text-warning">*</span></label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Mobile / Phone Number <span class="text-warning">*</span></label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Current City <span class="text-warning">*</span></label>
+                {{ form.current_city }}
+                {% if form.current_city.errors %}
+                <div class="text-danger small mt-1">{{ form.current_city.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Total Relevant Experience <span class="text-warning">*</span></label>
+                {{ form.years_of_experience }}
+                {% if form.years_of_experience.errors %}
+                <div class="text-danger small mt-1">{{ form.years_of_experience.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Current / Previous Employer</label>
+                {{ form.current_company }}
+                {% if form.current_company.errors %}
+                <div class="text-danger small mt-1">{{ form.current_company.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-12">
+                <label class="form-label text-dark fw-semibold small">Upload CV / Resume (PDF or DOC/DOCX, Max 5MB) <span class="text-warning">*</span></label>
+                {{ form.resume }}
+                <div class="form-text text-muted" style="font-size: 0.75rem;">Allowed formats: .pdf, .doc, .docx. Maximum file size: 5 MB.</div>
+                {% if form.resume.errors %}
+                <div class="text-danger small mt-1">{{ form.resume.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-12">
+                <label class="form-label text-dark fw-semibold small">Cover Note / Remarks (Optional)</label>
+                {{ form.cover_note }}
+                {% if form.cover_note.errors %}
+                <div class="text-danger small mt-1">{{ form.cover_note.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-12 mt-4 pt-2 border-top border-secondary border-opacity-25">
+                <button type="submit" class="btn btn-gold btn-lg w-100 py-3 fw-bold shadow">
+                  <i class="bi bi-send-fill me-2"></i> Submit Job Application
+                </button>
+                <p class="text-muted text-center small mt-2 mb-0">
+                  <i class="bi bi-shield-lock-fill text-warning"></i> Your candidate data and resume are processed confidentially by Krupa HR.
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Column: Job Parameters Sidebar -->
+      <div class="col-lg-4">
+        <div class="position-sticky" style="top: 100px;">
+          <!-- Job Parameters Card -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-4">
+            <h5 class="font-heading text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+              <i class="bi bi-briefcase text-warning me-2"></i> Role Summary
+            </h5>
+            <div class="d-flex flex-column gap-3 small">
+              <div>
+                <span class="text-muted d-block">Department:</span>
+                <span class="text-white fw-bold fs-6">{{ job.department }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Location:</span>
+                <span class="text-white fw-bold">{{ job.location }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Employment Type:</span>
+                <span class="text-white fw-bold">{{ job.employment_type }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Experience:</span>
+                <span class="text-white fw-bold text-warning">{{ job.experience_required }}</span>
+              </div>
+              {% if job.education %}
+              <div>
+                <span class="text-muted d-block">Education:</span>
+                <span class="text-white fw-bold">{{ job.education }}</span>
+              </div>
+              {% endif %}
+              <div>
+                <span class="text-muted d-block">Open Vacancies:</span>
+                <span class="text-white fw-bold">{{ job.number_of_vacancies }} Position{{ job.number_of_vacancies|pluralize }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Posted Date:</span>
+                <span class="text-white fw-bold">{{ job.created_at|date:"F d, Y" }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- HR Talent Contact Card -->
+          <div class="p-4 rounded-4 bg-black border border-secondary border-opacity-35 text-center mb-4">
+            <i class="bi bi-headset text-warning display-5 mb-2 d-block"></i>
+            <h5 class="text-white fw-bold mb-1">Recruitment Questions?</h5>
+            <p class="text-muted small mb-3">Reach out directly to our human resources and talent development division:</p>
+            <a href="mailto:careers@krupaelevator.com" class="text-warning text-decoration-none fw-semibold small d-block mb-1">
+              <i class="bi bi-envelope me-1"></i> careers@krupaelevator.com
+            </a>
+            <span class="text-muted small"><i class="bi bi-telephone me-1"></i> Tel: {{ site_settings.phone }}</span>
+          </div>
+
+          <!-- Other Open Jobs -->
+          {% if other_jobs %}
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25">
+            <h5 class="font-heading text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+              <i class="bi bi-diagram-3 text-warning me-2"></i> Other Open Roles
+            </h5>
+            <div class="d-flex flex-column gap-3">
+              {% for oj in other_jobs %}
+              <div>
+                <a href="{{ oj.get_absolute_url }}" class="text-white text-decoration-none small fw-semibold hover-gold d-block mb-1">
+                  {{ oj.title }}
+                </a>
+                <span class="text-muted" style="font-size: 0.75rem;">{{ oj.location }} &bull; {{ oj.experience_required }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

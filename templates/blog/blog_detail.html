@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.meta_title|default:post.title }} | Krupa Elevator Insights{% endblock %}
+
+{% block meta_description %}{{ post.meta_description|default:post.summary|truncatewords:25 }}{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'blog:list' %}">Blog</a></li>
+        <li class="breadcrumb-item"><a href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">{{ post.title|truncatechars:35 }}</li>
+      </ol>
+    </nav>
+
+    <div class="max-w-900">
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <a href="{{ post.category.get_absolute_url }}" class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase text-decoration-none">
+          <i class="bi bi-tag-fill me-1"></i> {{ post.category.name }}
+        </a>
+        <span class="badge bg-dark border border-secondary text-light px-3 py-2">
+          <i class="bi bi-clock me-1 text-warning"></i> {{ post.reading_time }} min read
+        </span>
+        <span class="badge bg-dark border border-secondary text-light px-3 py-2">
+          <i class="bi bi-eye me-1 text-warning"></i> {{ post.views_count }} views
+        </span>
+      </div>
+
+      <h1 class="display-4 font-heading text-white fw-bold mb-3">
+        {{ post.title }}
+      </h1>
+
+      <div class="d-flex align-items-center gap-3 text-secondary">
+        <span><i class="bi bi-person-fill text-warning me-1"></i> By <strong>{{ post.author }}</strong></span>
+        <span>&bull;</span>
+        <span><i class="bi bi-calendar3 text-warning me-1"></i> Published on {{ post.published_date|date:"F d, Y" }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Article Body Section -->
+<section class="py-5">
+  <div class="container py-3">
+    <div class="row g-5">
+      <!-- Left Column: Article Content -->
+      <div class="col-lg-8">
+        <!-- Featured Image -->
+        {% if post.featured_image %}
+        <div class="rounded-4 overflow-hidden mb-4 border border-secondary border-opacity-25 shadow-lg" style="max-height: 480px;">
+          <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-100 h-100 object-fit-cover">
+        </div>
+        {% endif %}
+
+        <!-- Lead In Excerpt -->
+        <div class="p-4 rounded-4 bg-dark border-start border-warning border-4 mb-4">
+          <p class="lead text-light mb-0" style="font-style: italic; line-height: 1.8;">
+            "{{ post.summary }}"
+          </p>
+        </div>
+
+        <!-- Main Narrative Body -->
+        <div class="article-body text-secondary fs-5 mb-5" style="line-height: 1.9;">
+          {{ post.content|linebreaks }}
+        </div>
+
+        <!-- Social Share Bar & Tags -->
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 d-flex flex-wrap justify-content-between align-items-center gap-3 mb-5">
+          <div class="d-flex align-items-center gap-2">
+            <span class="text-white fw-semibold small"><i class="bi bi-share text-warning me-1"></i> Share this guide:</span>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm text-light" aria-label="Share on LinkedIn">
+              <i class="bi bi-linkedin"></i>
+            </a>
+            <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="btn btn-outline-success btn-sm" aria-label="Share on WhatsApp">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+          </div>
+
+          <div>
+            <a href="{{ post.category.get_absolute_url }}" class="badge bg-black text-warning border border-secondary px-3 py-2 text-decoration-none">
+              #{{ post.category.name|slugify }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Sidebar -->
+      <div class="col-lg-4">
+        <div class="position-sticky" style="top: 100px;">
+          <!-- Author Card -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="d-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 border border-warning border-opacity-25 text-warning fw-bold fs-4" style="width: 54px; height: 54px;">
+                <i class="bi bi-layers-half"></i>
+              </div>
+              <div>
+                <h6 class="text-white fw-bold mb-0">{{ post.author }}</h6>
+                <span class="text-muted small">Krupa Engineering Standards Division</span>
+              </div>
+            </div>
+            <p class="text-muted small mb-0">
+              Our engineering editorial team publishes certified technical guidelines on elevator shafts, motor specifications, and EN-81 safety systems.
+            </p>
+          </div>
+
+          <!-- Quotation CTA Box -->
+          <div class="p-4 rounded-4 bg-black border border-warning border-opacity-35 text-center mb-4">
+            <i class="bi bi-calculator text-warning display-5 mb-2 d-block"></i>
+            <h5 class="text-white fw-bold mb-2">Need A Project Estimate?</h5>
+            <p class="text-muted small mb-3">Get turnkey equipment pricing, civil hoistway drawings, and power load requirements for your building.</p>
+            <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold w-100 fw-bold">
+              Request A Quote <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+
+          <!-- Blog Categories Widget -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-4">
+            <h5 class="font-heading text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+              <i class="bi bi-folder2 text-warning me-2"></i> Topics &amp; Categories
+            </h5>
+            <div class="d-flex flex-column gap-2">
+              {% for cat in categories %}
+              <a href="{{ cat.get_absolute_url }}" class="d-flex justify-content-between align-items-center text-decoration-none py-2 px-3 rounded-2 bg-black border border-secondary border-opacity-20 hover-gold">
+                <span class="text-light small">{{ cat.name }}</span>
+                <span class="badge bg-secondary">{{ cat.post_count }}</span>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Recent Posts Widget -->
+          {% if recent_posts %}
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25">
+            <h5 class="font-heading text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+              <i class="bi bi-clock-history text-warning me-2"></i> Recent Guides
+            </h5>
+            <div class="d-flex flex-column gap-3">
+              {% for rpost in recent_posts %}
+              <div>
+                <a href="{{ rpost.get_absolute_url }}" class="text-white text-decoration-none small fw-semibold hover-gold d-block mb-1">
+                  {{ rpost.title }}
+                </a>
+                <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 text-warning me-1"></i> {{ rpost.published_date|date:"M d, Y" }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Posts Row -->
+    {% if related_posts %}
+    <div class="mt-5 pt-4 border-top border-secondary border-opacity-25">
+      <div class="mb-4">
+        <span class="section-tag"><i class="bi bi-link-45deg"></i> Related Reading</span>
+        <h3 class="font-heading text-white fw-bold mb-0">More Guides in {{ post.category.name }}</h3>
+      </div>
+      <div class="row g-4">
+        {% for rel in related_posts %}
+        <div class="col-lg-4 col-md-6">
+          <div class="feature-card d-flex flex-column justify-content-between h-100 p-4">
+            <div>
+              <span class="badge bg-warning bg-opacity-15 text-warning border border-warning border-opacity-25 mb-2">{{ rel.category.name }}</span>
+              <h5 class="text-white fw-bold mb-2">
+                <a href="{{ rel.get_absolute_url }}" class="text-white text-decoration-none hover-gold">{{ rel.title }}</a>
+              </h5>
+              <p class="text-muted small mb-3">{{ rel.summary|truncatewords:16 }}</p>
+            </div>
+            <a href="{{ rel.get_absolute_url }}" class="btn btn-outline-gold btn-sm w-100">
+              Read Article &rarr;
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+

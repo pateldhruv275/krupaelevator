@@ -1,0 +1,874 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ site_settings.company_name|default:"Krupa Elevator" }} | Precision Engineered Vertical Mobility{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================================
+     1. HERO SLIDER SECTION
+     ========================================================================= -->
+<section class="hero-slider-section">
+  <!-- Kinetic Elevator Particle Motion Overlay Layer (Hero Viewport) -->
+  <div id="heroParticles" class="hero-particles-canvas" aria-hidden="true"></div>
+
+  {% if hero_slides %}
+  <div id="krupaHeroCarousel" class="carousel slide carousel-fade w-100" data-bs-ride="carousel" data-bs-interval="6500">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      {% for slide in hero_slides %}
+      <button type="button" 
+              data-bs-target="#krupaHeroCarousel" 
+              data-bs-slide-to="{{ forloop.counter0 }}" 
+              class="{% if forloop.first %}active{% endif %}" 
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}" 
+              aria-label="Slide {{ forloop.counter }}">
+      </button>
+      {% endfor %}
+    </div>
+
+    <!-- Carousel Items -->
+    <div class="carousel-inner">
+      {% for slide in hero_slides %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %} {% if not slide.image %}hero-default-bg{% endif %}"
+           {% if slide.image %}style="background-image: url('{{ slide.image.url }}');"{% endif %}>
+        <div class="hero-overlay">
+          <div class="container">
+            <div class="hero-content">
+              {% if slide.subtitle %}
+              <div class="d-inline-flex align-items-center gap-2 mb-3">
+                <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase tracking-wider shadow-sm">
+                  <i class="bi bi-shield-check me-1"></i> {{ slide.subtitle }}
+                </span>
+              </div>
+              {% endif %}
+
+              <h1 class="hero-title text-white">
+                {{ slide.title }}
+              </h1>
+
+              {% if slide.description %}
+              <p class="hero-desc">
+                {{ slide.description }}
+              </p>
+              {% endif %}
+
+              <div class="d-flex flex-wrap gap-3 mt-4">
+                {% if slide.button_text and slide.button_url %}
+                <a href="{{ slide.button_url }}" class="btn btn-gold btn-lg shadow">
+                  {{ slide.button_text }} <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+                {% else %}
+                <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold btn-lg shadow">
+                  <i class="bi bi-calculator me-1"></i> Request A Quote
+                </a>
+                {% endif %}
+
+                {% if slide.secondary_button_text and slide.secondary_button_url %}
+                <a href="{{ slide.secondary_button_url }}" class="btn btn-outline-gold btn-lg">
+                  {{ slide.secondary_button_text }}
+                </a>
+                {% else %}
+                <a href="#products" class="btn btn-outline-gold btn-lg">
+                  <i class="bi bi-grid me-1"></i> Explore Products
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    {% if hero_slides|length > 1 %}
+    <button class="carousel-control-prev" type="button" data-bs-target="#krupaHeroCarousel" data-bs-slide="prev" aria-label="Previous Slide">
+      <i class="bi bi-chevron-left fs-4"></i>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#krupaHeroCarousel" data-bs-slide="next" aria-label="Next Slide">
+      <i class="bi bi-chevron-right fs-4"></i>
+      <span class="visually-hidden">Next</span>
+    </button>
+    {% endif %}
+  </div>
+  {% else %}
+  <!-- Fallback Hero Banner -->
+  <div class="w-100 py-5 my-5 text-center hero-default-bg text-white">
+    <div class="container py-5">
+      <span class="section-tag"><i class="bi bi-layers-half"></i> Precision Engineering</span>
+      <h1 class="display-3 font-heading fw-bold mb-4">Elevating Modern Architecture with Supreme Safety</h1>
+      <p class="lead text-muted max-w-700 mx-auto mb-4">India's dependable manufacturer and service partner for residential, commercial, and heavy-duty industrial vertical transport systems.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold btn-lg">Get An Instant Quote</a>
+        <a href="#products" class="btn btn-outline-gold btn-lg">Explore Elevator Systems</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<!-- =========================================================================
+     2. COMPANY INTRODUCTION SECTION
+     ========================================================================= -->
+<section id="about" class="py-5 bg-white reveal-on-scroll">
+  <div class="container py-4">
+    <div class="row g-5 align-items-center">
+      <!-- Left Column: Story & Accents -->
+      <div class="col-lg-6">
+        <span class="section-tag">
+          <i class="bi bi-patch-check-fill"></i> About Krupa Elevator
+        </span>
+        <h2 class="section-title">
+          Engineering Vertical Mobility with <span class="text-teal">Absolute Precision</span> &amp; <span class="text-orange">Trust</span>
+        </h2>
+        <p class="text-secondary fs-5 mb-4 lh-base">
+          From high-speed commercial passenger banks and panoramic glass capsules to space-saving residential MRL lifts, <strong>{{ site_settings.company_name|default:"Krupa Elevator" }}</strong> delivers whisper-quiet, ultra-reliable vertical mobility engineered to European EN-81 and Indian IS 14665 directives.
+        </p>
+
+        <!-- Core Service Capabilities Badges -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <span class="badge badge-teal px-3 py-2"><i class="bi bi-hammer me-1 text-teal"></i> Turnkey Installation</span>
+          <span class="badge bg-warning-subtle text-orange border border-warning-subtle px-3 py-2"><i class="bi bi-shield-check me-1 text-orange"></i> Proactive AMC</span>
+          <span class="badge badge-teal px-3 py-2"><i class="bi bi-arrow-repeat me-1 text-teal"></i> Modernization</span>
+        </div>
+
+        <!-- Compact Value Highlights -->
+        <div class="row g-3 pt-1">
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-white border border-light-subtle shadow-sm d-flex gap-3 align-items-center hover-card-lift">
+              <i class="bi bi-shield-lock-fill text-teal fs-2 flex-shrink-0"></i>
+              <div>
+                <h6 class="text-dark fw-bold mb-0">EN-81 Certified</h6>
+                <p class="text-muted small mb-0">Multi-tier fail-safe safety</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-white border border-light-subtle shadow-sm d-flex gap-3 align-items-center hover-card-lift">
+              <i class="bi bi-lightning-charge-fill text-orange fs-2 flex-shrink-0"></i>
+              <div>
+                <h6 class="text-dark fw-bold mb-0">40% Energy Saving</h6>
+                <p class="text-muted small mb-0">Regenerative PMSM V3F</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-white border border-light-subtle shadow-sm d-flex gap-3 align-items-center hover-card-lift">
+              <i class="bi bi-gem text-teal fs-2 flex-shrink-0"></i>
+              <div>
+                <h6 class="text-dark fw-bold mb-0">Luxury Cabins</h6>
+                <p class="text-muted small mb-0">Titanium gold &amp; panoramic</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-white border border-light-subtle shadow-sm d-flex gap-3 align-items-center hover-card-lift">
+              <i class="bi bi-tools text-orange fs-2 flex-shrink-0"></i>
+              <div>
+                <h6 class="text-dark fw-bold mb-0">24/7 Rapid AMC</h6>
+                <p class="text-muted small mb-0">99.8% guaranteed uptime</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 d-flex flex-wrap gap-3 align-items-center">
+          <a href="#contact" class="btn btn-gold">
+            <i class="bi bi-telephone-outbound me-1"></i> Speak to Our Chief Engineer
+          </a>
+          <a href="{% url 'core:services' %}" class="btn btn-outline-gold">
+            View Maintenance &amp; AMC Plans <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Visual Showcase -->
+      <div class="col-lg-6">
+        <div class="about-visual-card position-relative">
+          <div class="about-image-container position-relative">
+            <img src="{% static 'images/about_elevator_cabin.jpg' %}" 
+                 alt="Krupa Elevator Luxury Cabin Architecture" 
+                 class="img-fluid w-100 object-fit-cover about-main-img" 
+                 style="min-height: 440px; max-height: 520px;">
+            <div class="about-image-gradient"></div>
+
+            <!-- Floating Badge: Experience -->
+            <div class="about-badge-floating">
+              <div class="d-flex align-items-center gap-2">
+                <span class="about-badge-icon"><i class="bi bi-shield-check"></i></span>
+                <div>
+                  <div class="about-badge-val">25+ Years</div>
+                  <div class="about-badge-lbl">Engineering Trust</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating Card: Certified Standard -->
+            <div class="about-card-floating">
+              <div class="d-flex align-items-center gap-3">
+                <div class="about-award-badge">
+                  <i class="bi bi-award-fill"></i>
+                </div>
+                <div>
+                  <div class="text-dark fw-bold mb-1">ISO 9001:2015 &amp; CE Certified</div>
+                  <p class="text-muted small mb-0">1,800+ Installations Across India &bull; 48-Point Safety Verification</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     3. STATISTICS COUNTER SECTION
+     ========================================================================= -->
+{% if statistics %}
+<section class="stats-section reveal-on-scroll">
+  <div class="container">
+    <div class="stats-card-container">
+      <div class="row g-4 align-items-center">
+        {% for stat in statistics %}
+        <div class="col-xl-3 col-md-6">
+          <div class="stat-item hover-card-lift">
+            <div class="stat-icon-wrapper">
+              <i class="bi {{ stat.icon|default:'bi-award' }}"></i>
+            </div>
+            <div>
+              <div class="stat-number" data-target="{{ stat.number }}">
+                {{ stat.number }}<span class="stat-suffix">{{ stat.suffix }}</span>
+              </div>
+              <p class="stat-title">{{ stat.title }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- =========================================================================
+     4. PRODUCT CATEGORIES SHOWCASE
+     ========================================================================= -->
+<section id="products" class="py-5 bg-light-subtle border-top border-bottom border-light-subtle reveal-on-scroll">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="section-tag"><i class="bi bi-grid-3x3-gap"></i> Engineered Systems</span>
+      <h2 class="section-title text-dark fw-bold">Our <span class="text-teal">Precision Elevator</span> Range</h2>
+      <p class="section-subtitle text-secondary mx-auto fw-medium fs-5">
+        Precision vertical mobility solutions designed to integrate flawlessly into residential, commercial, industrial, and healthcare infrastructures.
+      </p>
+    </div>
+
+    <!-- Product Category Cards Grid (Image-Rich) -->
+    <div class="row g-4">
+      {% if product_categories %}
+        {% for cat in product_categories %}
+        <div class="col-xl-4 col-md-6">
+          <div class="product-showcase-card hover-card-lift">
+            <!-- Image Header with Smooth Zoom -->
+            <div class="product-card-media position-relative overflow-hidden">
+              {% if cat.image %}
+                <img src="{{ cat.image.url }}" alt="{{ cat.name }}" class="product-card-img" loading="lazy">
+              {% else %}
+                <img src="{% static 'images/hero_elevator_bg.jpg' %}" alt="{{ cat.name }}" class="product-card-img" loading="lazy">
+              {% endif %}
+              <div class="product-card-gradient"></div>
+              
+              <div class="product-card-topbar">
+                <span class="product-badge-pill">
+                  <i class="bi bi-shield-check text-teal me-1"></i> IS &amp; EN-81
+                </span>
+                <span class="product-icon-circle">
+                  <i class="bi {{ cat.icon|default:'bi-layers' }}"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body with Specs -->
+            <div class="product-card-body p-4">
+              <h4 class="product-card-title mb-2">
+                <a href="{{ cat.get_absolute_url }}" class="text-dark text-decoration-none hover-teal">{{ cat.name }}</a>
+              </h4>
+              <p class="text-muted small mb-3 flex-grow-1">
+                {{ cat.short_description|default:cat.description|truncatewords:14 }}
+              </p>
+              <div class="pt-3 border-top border-light-subtle d-flex justify-content-between align-items-center mt-auto">
+                <span class="text-orange small fw-bold">
+                  <i class="bi bi-speedometer2 me-1"></i> 0.65 &ndash; 2.5 m/s
+                </span>
+                <a href="{{ cat.get_absolute_url }}" class="btn-product-link">
+                  Explore Model <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Catalog CTA Bar -->
+    <div class="text-center mt-5">
+      <p class="text-muted mb-3">Looking for tailored shaft clearance drawings, custom finishes, or specific hoistway calculations?</p>
+      <a href="{% url 'products:list' %}" class="btn btn-outline-gold px-4 py-2">
+        <i class="bi bi-grid-3x3-gap-fill me-2"></i> Browse Complete Elevator Catalog (All 10 Categories)
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     5. WHY CHOOSE KRUPA ELEVATOR
+     ========================================================================= -->
+<section id="why-choose-us" class="py-5 bg-white reveal-on-scroll">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="section-tag"><i class="bi bi-stars"></i> Engineering Advantage</span>
+      <h2 class="section-title text-dark fw-bold">Why Choose <span class="text-teal">Krupa Elevator</span>?</h2>
+      <p class="section-subtitle text-secondary mx-auto fw-medium fs-5">
+        Built on a foundation of uncompromising passenger safety, whisper-quiet travel, and proactive lifetime maintenance.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      {% if features %}
+        {% for feat in features %}
+        <div class="col-lg-3 col-md-6">
+          <div class="feature-card hover-card-lift h-100 d-flex flex-column justify-content-between">
+            <div>
+              {% if feat.badge_text %}
+              <span class="feature-badge">{{ feat.badge_text }}</span>
+              {% endif %}
+              <div class="feature-icon-box">
+                <i class="bi {{ feat.icon|default:'bi-shield-check' }}"></i>
+              </div>
+              <h5 class="text-dark fw-bold mb-2">{{ feat.title }}</h5>
+              <p class="text-muted small mb-0">{{ feat.description }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-lg-3 col-md-6">
+          <div class="feature-card hover-card-lift h-100">
+            <span class="feature-badge">Safety First</span>
+            <div class="feature-icon-box"><i class="bi bi-shield-check"></i></div>
+            <h5 class="text-dark fw-bold mb-2">Uncompromising Safety</h5>
+            <p class="text-muted small mb-0">Multi-tier safety architecture with mechanical overspeed governors and fail-safe ARD.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="feature-card hover-card-lift h-100">
+            <span class="feature-badge">Eco-Smart</span>
+            <div class="feature-icon-box"><i class="bi bi-lightning-charge"></i></div>
+            <h5 class="text-dark fw-bold mb-2">40% Energy Savings</h5>
+            <p class="text-muted small mb-0">PMSM gearless drives and regenerative vector inverters feeding power back to your building.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="feature-card hover-card-lift h-100">
+            <span class="feature-badge">Custom Crafted</span>
+            <div class="feature-icon-box"><i class="bi bi-palette"></i></div>
+            <h5 class="text-dark fw-bold mb-2">Architectural Luxury</h5>
+            <p class="text-muted small mb-0">Bespoke titanium SS cabins, panoramic glass capsules, and laser ceiling lighting.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="feature-card hover-card-lift h-100">
+            <span class="feature-badge">Proactive Care</span>
+            <div class="feature-icon-box"><i class="bi bi-tools"></i></div>
+            <h5 class="text-dark fw-bold mb-2">24/7 Rapid AMC</h5>
+            <p class="text-muted small mb-0">Dedicated field service engineers ensuring 99.8% uptime with guaranteed urban response.</p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     6. TECHNOLOGY & ENGINEERING FEATURES MATRIX
+     ========================================================================= -->
+<section id="technology" class="py-5 bg-light-subtle border-top border-bottom border-light-subtle">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="section-tag"><i class="bi bi-cpu"></i> Advanced Engineering</span>
+      <h2 class="section-title text-dark fw-bold">State-of-the-Art <span class="text-teal">Elevator Technology</span></h2>
+      <p class="section-subtitle text-secondary mx-auto fw-medium fs-5">
+        Next-generation PMSM gearless motors, energy-regenerative drives, and intelligent group collective dispatching.
+      </p>
+    </div>
+
+    <!-- High-Tech Visual Split Layout -->
+    <div class="row g-4 align-items-stretch">
+      <!-- Left Column: Photographic Engineering Showcase -->
+      <div class="col-lg-5">
+        <div class="tech-visual-card position-relative overflow-hidden">
+          <img src="{% static 'images/tech_mrl_motor.jpg' %}" alt="PMSM Gearless Elevator Motor Hoistway" class="tech-visual-img" loading="lazy">
+          <div class="tech-visual-overlay"></div>
+          
+          <!-- Telemetry Badges -->
+          <div class="position-absolute top-0 start-0 p-3 d-flex flex-column gap-2" style="z-index: 3;">
+            <span class="tech-telemetry-badge">
+              <i class="bi bi-cpu-fill text-teal"></i> Microprocessor Group Control
+            </span>
+            <span class="tech-telemetry-badge">
+              <i class="bi bi-lightning-charge-fill text-orange"></i> 40% V3F Regeneration
+            </span>
+          </div>
+
+          <div class="tech-visual-content">
+            <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2 text-uppercase">
+              <i class="bi bi-gear-wide-connected me-1"></i> Core Drive Architecture
+            </span>
+            <h3 class="font-heading text-white fw-bold mb-1">PMSM Gearless Traction</h3>
+            <p class="text-white text-opacity-95 small mb-0 lh-base">High-efficiency permanent magnet synchronous motor delivering whisper-quiet travel under 48 dB with zero gearbox oil maintenance.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: 4 Technical Specification Cards -->
+      <div class="col-lg-7">
+        <div class="row g-3 h-100">
+          {% for tech in technology_features|slice:":4" %}
+          <div class="col-md-6">
+            <div class="tech-spec-card d-flex flex-column justify-content-between h-100">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="tech-spec-badge"><i class="bi bi-check-circle-fill text-teal me-1"></i> {{ tech.badge }}</span>
+                  <div class="text-teal fs-4"><i class="bi {{ tech.icon }}"></i></div>
+                </div>
+                <h5 class="text-dark fw-bold mb-2">{{ tech.title }}</h5>
+                <p class="text-secondary small mb-3 lh-base">{{ tech.description|truncatewords:18 }}</p>
+              </div>
+              <div class="d-flex flex-wrap gap-2 pt-2 border-top border-light-subtle mt-auto">
+                {% for spec in tech.specs %}
+                <span class="badge bg-light-subtle text-dark border border-secondary border-opacity-25 shadow-xs small fw-semibold px-2 py-1">
+                  <i class="bi bi-dot text-orange fs-6"></i> {{ spec }}
+                </span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     7. INDUSTRIES SERVED SECTION (PHOTO BACKDROP CARDS)
+     ========================================================================= -->
+{% if industries %}
+<section id="industries" class="py-5 bg-white reveal-on-scroll">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="section-tag"><i class="bi bi-buildings"></i> Versatile Applications</span>
+      <h2 class="section-title text-dark fw-bold">Industries We Serve</h2>
+      <p class="section-subtitle text-secondary mx-auto fw-medium fs-5">
+        Engineered vertical transit infrastructure trusted across residential towers, corporate hubs, and healthcare facilities.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      {% for ind in industries|slice:":6" %}
+      <div class="col-xl-4 col-md-6">
+        <div class="industry-photo-card" 
+             {% if ind.image %}style="background-image: url('{{ ind.image.url }}');"
+             {% else %}style="background-image: url('{% static 'images/projects/skyline_towers.jpg' %}');"{% endif %}>
+          <div class="industry-photo-icon">
+            <i class="bi {{ ind.icon|default:'bi-building' }}"></i>
+          </div>
+          <h4 class="industry-photo-title">{{ ind.name }}</h4>
+          <p class="text-white text-opacity-75 small mb-2 lh-sm">{{ ind.description|default:"Engineered passenger and freight solutions tailored to structural specifications."|truncatewords:10 }}</p>
+          <a href="{% url 'products:list' %}" class="industry-photo-link">
+            Explore Sector Systems <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- =========================================================================
+     8. WORK PROCESS (STEP BY STEP METHODOLOGY)
+     ========================================================================= -->
+{% if process_steps %}
+<section id="process" class="py-5 bg-light-subtle border-top border-bottom border-light-subtle reveal-on-scroll">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="section-tag"><i class="bi bi-diagram-3"></i> Proven Methodology</span>
+      <h2 class="section-title text-dark fw-bold">Our Turnkey <span class="text-orange">Execution Process</span></h2>
+      <p class="section-subtitle text-secondary mx-auto fw-medium fs-5">
+        From initial hoistway laser surveys to statutory certifications and lifetime AMC care, our systematic process ensures flawless delivery.
+      </p>
+    </div>
+
+    <!-- Connected Horizontal Roadmap -->
+    <div class="process-roadmap-container">
+      <div class="process-roadmap-line"></div>
+      <div class="row g-3 g-lg-3">
+        {% for step in process_steps %}
+        <div class="col-lg-2 col-md-4 col-6">
+          <div class="process-node-card text-center hover-card-lift">
+            <div class="process-node-circle">
+              <span>0{{ step.step_number }}</span>
+            </div>
+            <h6 class="text-dark fw-bold mb-1">{{ step.title }}</h6>
+            <p class="text-muted small mb-0 fs-7 lh-sm">{{ step.short_description|truncatewords:8 }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- =========================================================================
+     9. FEATURED PROJECTS SECTION (IMAGE-RICH EDITORIAL SHOWCASE)
+     ========================================================================= -->
+{% if featured_projects %}
+<section id="projects" class="py-5 bg-white reveal-on-scroll">
+  <div class="container py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+      <div>
+        <span class="section-tag"><i class="bi bi-trophy"></i> Portfolio &amp; Case Studies</span>
+        <h2 class="section-title text-dark fw-bold mb-0">Featured Elevator Installations</h2>
+      </div>
+      <div class="mt-3 mt-md-0">
+        <a href="{% url 'projects:list' %}" class="btn btn-outline-gold btn-sm">
+          Browse All Projects <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for proj in featured_projects %}
+      <div class="col-lg-4 col-md-6">
+        <div class="project-showcase-card hover-card-lift h-100 d-flex flex-column">
+          <!-- Project Media Header with Smooth Zoom -->
+          <div class="project-card-media position-relative overflow-hidden">
+            {% if proj.featured_image %}
+              <img src="{{ proj.featured_image.url }}" alt="{{ proj.title }}" class="project-card-img" loading="lazy">
+            {% else %}
+              <img src="{% static 'images/projects/skyline_towers.jpg' %}" alt="{{ proj.title }}" class="project-card-img" loading="lazy">
+            {% endif %}
+            <div class="project-card-scrim"></div>
+            <div class="project-card-badges">
+              <span class="badge badge-teal">{{ proj.project_type }}</span>
+              <span class="badge bg-white text-orange border border-light-subtle shadow-sm">
+                <i class="bi bi-geo-alt-fill me-1"></i> {{ proj.city }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Project Card Body -->
+          <div class="project-card-body p-4 d-flex flex-column flex-grow-1">
+            <h4 class="project-card-title mb-2">
+              <a href="{{ proj.get_absolute_url }}" class="text-dark text-decoration-none hover-teal">{{ proj.title }}</a>
+            </h4>
+            <p class="text-muted small mb-3 flex-grow-1">
+              {{ proj.description|truncatewords:14 }}
+            </p>
+            <div class="pt-3 border-top border-light-subtle d-flex justify-content-between align-items-center mt-auto">
+              <span class="text-secondary small fw-semibold">
+                <i class="bi bi-layers-fill text-teal me-1"></i> {{ proj.number_of_elevators }} Units Installed
+              </span>
+              <a href="{{ proj.get_absolute_url }}" class="text-orange fw-bold small text-decoration-none">
+                Case Study &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- =========================================================================
+     10. CLIENT LOGOS & CREDENTIALS SECTION
+     ========================================================================= -->
+{% if clients %}
+<section id="clients" class="py-5 bg-light-subtle border-top border-bottom border-light-subtle reveal-on-scroll">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-4">
+      <span class="section-tag"><i class="bi bi-hand-thumbs-up"></i> Client Credentials</span>
+      <h2 class="section-title text-dark fw-bold">Trusted by Leading Builders &amp; Enterprises</h2>
+      <p class="section-subtitle text-secondary mx-auto fw-medium fs-5">
+        Proudly partnering with prestigious residential developments, corporate towers, and multi-speciality healthcare campuses.
+      </p>
+    </div>
+
+    <div class="row g-3 justify-content-center align-items-center">
+      {% for client in clients %}
+      <div class="col-lg-2 col-md-4 col-6 text-center">
+        <div class="client-logo-box h-100 d-flex flex-column justify-content-center align-items-center">
+          {% if client.logo %}
+          <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="img-fluid mb-2" style="max-height: 48px;">
+          {% else %}
+          <i class="bi bi-building text-teal fs-3 mb-1"></i>
+          {% endif %}
+          <span class="text-dark small fw-semibold text-truncate w-100">{{ client.name }}</span>
+          {% if client.industry %}
+          <span class="text-muted" style="font-size: 0.75rem;">{{ client.industry }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4 pt-2">
+      <a href="{% url 'core:clients' %}" class="text-teal small fw-semibold text-decoration-none">
+        View Full Client Portfolio &amp; Testimonials <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- =========================================================================
+     11. TESTIMONIALS CAROUSEL SECTION
+     ========================================================================= -->
+{% if testimonials %}
+<section id="testimonials" class="py-5 bg-white reveal-on-scroll">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="section-tag"><i class="bi bi-chat-quote-fill"></i> Client Voices</span>
+      <h2 class="section-title text-dark fw-bold">What Architects &amp; Developers Say</h2>
+      <p class="section-subtitle text-secondary mx-auto fw-medium fs-5">
+        Read genuine endorsements from building owners, structural engineers, and facility heads who rely on Krupa Elevator daily.
+      </p>
+    </div>
+
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="7000">
+      <div class="carousel-inner">
+        {% for item in testimonials %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+              <div class="testimonial-quote-card position-relative text-center">
+                <!-- Large decorative quote mark -->
+                <i class="bi bi-quote text-teal opacity-25 display-1 position-absolute top-0 start-50 translate-middle-x mt-2"></i>
+                
+                <!-- Star Rating in Warm Golden Amber -->
+                <div class="mb-3 position-relative z-1">
+                  {% for i in item.rating_range %}
+                  <i class="bi bi-star-fill text-warning fs-5 me-1"></i>
+                  {% endfor %}
+                  {% for i in item.empty_rating_range %}
+                  <i class="bi bi-star text-muted fs-5 me-1"></i>
+                  {% endfor %}
+                </div>
+
+                <!-- Quote text -->
+                <p class="text-secondary fs-5 fst-italic mb-4 position-relative z-1 lh-base">
+                  &ldquo;{{ item.quote }}&rdquo;
+                </p>
+
+                <!-- Reviewer profile -->
+                <div class="d-flex align-items-center justify-content-center gap-3 pt-3 border-top border-light-subtle position-relative z-1">
+                  {% if item.photo %}
+                  <img src="{{ item.photo.url }}" alt="{{ item.client_name }}" class="rounded-circle object-fit-cover border border-teal" width="56" height="56">
+                  {% else %}
+                  <div class="rounded-circle bg-teal-subtle text-teal d-flex align-items-center justify-content-center fw-bold fs-5 border border-teal" style="width: 56px; height: 56px;">
+                    {{ item.client_name|slice:":1" }}
+                  </div>
+                  {% endif %}
+                  <div class="text-start">
+                    <h6 class="text-dark fw-bold mb-0">{{ item.client_name }}</h6>
+                    <span class="text-muted small d-block">
+                      {% if item.client_title %}{{ item.client_title }}{% endif %}{% if item.company %}, {{ item.company }}{% endif %}{% if item.city %} ({{ item.city }}){% endif %}
+                    </span>
+                    {% if item.elevator_type_installed %}
+                    <span class="badge bg-warning-subtle text-orange border border-warning-subtle px-2 py-0 mt-1 small">
+                      <i class="bi bi-layers me-1"></i> {{ item.elevator_type_installed }}
+                    </span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Controls & Indicators -->
+      {% if testimonials|length > 1 %}
+      <div class="d-flex justify-content-center align-items-center gap-3 mt-4">
+        <button class="btn btn-outline-teal btn-sm rounded-circle p-2 px-3 text-teal border border-light-subtle bg-white shadow-sm" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Previous Testimonial">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <div class="carousel-indicators position-relative m-0">
+          {% for item in testimonials %}
+          <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+          {% endfor %}
+        </div>
+        <button class="btn btn-outline-teal btn-sm rounded-circle p-2 px-3 text-teal border border-light-subtle bg-white shadow-sm" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Next Testimonial">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- =========================================================================
+     12. CALL TO ACTION BANNER
+     ========================================================================= -->
+<section class="py-5 reveal-on-scroll">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">
+            <i class="bi bi-lightning-charge-fill me-1"></i> Fast-Track Consultation
+          </span>
+          <h2 class="font-heading text-white display-6 fw-bold mb-3">
+            Looking for the Right Elevator Solution for Your Building?
+          </h2>
+          <p class="text-secondary fs-5 mb-0">
+            Get comprehensive architectural drawings, shaft clearance consultations, and detailed cost estimates from our senior technical team within 24 hours.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <div class="d-flex flex-column flex-sm-row flex-lg-column gap-3 justify-content-lg-end">
+            <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold btn-lg shadow">
+              <i class="bi bi-calculator me-1"></i> Request A Quote
+            </a>
+            <a href="tel:{{ site_settings.phone }}" class="btn btn-outline-gold btn-lg">
+              <i class="bi bi-telephone me-1"></i> Call {{ site_settings.phone }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     13. QUICK ENQUIRY & CONTACT SECTION
+     ========================================================================= -->
+<section id="contact" class="py-5 bg-light-subtle border-top border-light-subtle reveal-on-scroll">
+  <div class="container py-4">
+    <div class="row g-5 align-items-center">
+      <!-- Left Column: Quick Contact Info -->
+      <div class="col-lg-5">
+        <span class="section-tag"><i class="bi bi-headset"></i> Get In Touch</span>
+        <h2 class="section-title text-dark fw-bold">Let's Discuss Your <span class="text-teal">Elevator Project</span></h2>
+        <p class="text-secondary fs-5 fw-medium mb-4">
+          Whether you require a new installation, modernization of aging machinery, or a dependable AMC partner, Krupa Elevator is ready to assist.
+        </p>
+
+        <div class="d-flex flex-column gap-3">
+          <div class="contact-info-card d-flex gap-3 align-items-center">
+            <i class="bi bi-geo-alt-fill text-teal fs-3 flex-shrink-0"></i>
+            <div>
+              <span class="text-dark fw-bold d-block">Factory &amp; Corporate Office</span>
+              <span class="text-muted small">{{ site_settings.address }}</span>
+            </div>
+          </div>
+
+          <div class="contact-info-card d-flex gap-3 align-items-center">
+            <i class="bi bi-telephone-inbound-fill text-orange fs-3 flex-shrink-0"></i>
+            <div>
+              <span class="text-dark fw-bold d-block">Sales &amp; Technical Consultation</span>
+              <a href="tel:{{ site_settings.phone }}" class="text-teal fw-semibold">{{ site_settings.phone }}</a>
+              {% if site_settings.alternate_phone %}
+              <span class="text-muted small d-block">Alt: {{ site_settings.alternate_phone }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="contact-info-card d-flex gap-3 align-items-center">
+            <i class="bi bi-envelope-check-fill text-teal fs-3 flex-shrink-0"></i>
+            <div>
+              <span class="text-dark fw-bold d-block">Direct Email Inquiries</span>
+              <a href="mailto:{{ site_settings.email }}" class="text-teal text-decoration-none fw-semibold">{{ site_settings.email }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Quick Enquiry Form -->
+      <div class="col-lg-7" id="quote">
+        <div class="quick-enquiry-card">
+          <div class="mb-4">
+            <h3 class="font-heading text-dark fw-bold mb-1">Quick Project Enquiry</h3>
+            <p class="text-muted small">Fill out the form below and an engineer will respond within 24 hours.</p>
+          </div>
+
+          <form action="{% url 'enquiries:contact' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-semibold">Your Full Name <span class="text-orange">*</span></label>
+                <input type="text" name="name" class="form-control" placeholder="e.g. Rajesh Patel" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-semibold">Phone / Mobile <span class="text-orange">*</span></label>
+                <input type="tel" name="phone" class="form-control" placeholder="+91 98765 43210" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-semibold">Email Address <span class="text-orange">*</span></label>
+                <input type="email" name="email" class="form-control" placeholder="name@company.com" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-semibold">City / Project Location <span class="text-orange">*</span></label>
+                <input type="text" name="city" class="form-control" placeholder="e.g. Ahmedabad, Mumbai, Pune" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label text-dark small fw-semibold">Elevator Type / Subject</label>
+                <select name="subject" class="form-select">
+                  <option value="Elevator Installation" selected>Elevator Installation</option>
+                  <option value="Passenger Elevator">Passenger Elevator</option>
+                  <option value="Home / Villa Elevator">Home / Villa Elevator</option>
+                  <option value="Hospital & Stretcher Lift">Hospital &amp; Stretcher Lift</option>
+                  <option value="Freight / Goods Elevator">Freight / Goods Elevator</option>
+                  <option value="Panoramic Glass Elevator">Panoramic Glass Elevator</option>
+                  <option value="Hydraulic Elevator">Hydraulic Elevator</option>
+                  <option value="MRL Elevator">MRL Elevator</option>
+                  <option value="Elevator Modernization / AMC">Elevator Modernization / AMC</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label text-dark small fw-semibold">Project Requirements / Floors / Remarks <span class="text-orange">*</span></label>
+                <textarea name="message" class="form-control" rows="3" placeholder="Tell us about the number of stops, capacity, or building details..." required></textarea>
+              </div>
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-gold w-100 py-3 fw-bold shadow">
+                  <i class="bi bi-send-fill me-2"></i> Submit Elevator Enquiry
+                </button>
+                <div class="text-center mt-3">
+                  <a href="{% url 'enquiries:quote_request' %}" class="text-teal small text-decoration-none fw-semibold">
+                    Need a detailed technical quotation? Open Full Specification Sheet &rarr;
+                  </a>
+                </div>
+                <p class="text-muted text-center small mt-2 mb-0">
+                  <i class="bi bi-lock-fill text-teal"></i> Your contact details are 100% confidential and secure.
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

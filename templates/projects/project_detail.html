@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.meta_title|default:project.title }} | Project Case Study | {{ site_settings.company_name|default:"Krupa Elevator" }}{% endblock %}
+
+{% block meta_description %}{{ project.meta_description|default:project.description|truncatewords:25 }}{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner"
+         {% if project.featured_image %}style="background: linear-gradient(90deg, rgba(7,10,18,0.95) 0%, rgba(14,21,38,0.85) 100%), url('{{ project.featured_image.url }}') center/cover;"{% endif %}>
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'projects:list' %}">Projects</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">{{ project.title }}</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase">
+            <i class="bi bi-building me-1"></i> {{ project.project_type }}
+          </span>
+          <span class="badge bg-dark border border-secondary text-warning px-3 py-2">
+            <i class="bi bi-geo-alt-fill me-1"></i> {{ project.city }}
+          </span>
+          <span class="badge bg-dark border border-secondary text-light px-3 py-2">
+            <i class="bi bi-layers-half me-1"></i> {{ project.number_of_elevators }} Units Commissioned
+          </span>
+        </div>
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          {{ project.title }}
+        </h1>
+        <p class="lead text-light mb-0">
+          <i class="bi bi-pin-map text-warning me-1"></i> {{ project.location }}, {{ project.city }}
+        </p>
+      </div>
+
+      <div class="col-lg-4 text-lg-end">
+        <a href="#quoteCTA" class="btn btn-gold btn-lg">
+          <i class="bi bi-calculator me-1"></i> Request Similar System
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Case Study Main Content -->
+<section class="py-5">
+  <div class="container py-3">
+    <div class="row g-5">
+      <!-- Left Column: Case Study Narrative & Gallery -->
+      <div class="col-lg-8">
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-secondary border-opacity-25 mb-5">
+          <h3 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-journal-text text-warning"></i> Project Overview & Engineering Scope
+          </h3>
+          <div class="text-secondary fs-5" style="line-height: 1.8;">
+            {{ project.description|linebreaks }}
+          </div>
+        </div>
+
+        <!-- Project Photo Gallery -->
+        {% if images %}
+        <div class="mb-5">
+          <h4 class="font-heading text-white fw-bold mb-4 d-flex align-items-center gap-2">
+            <i class="bi bi-images text-warning"></i> Installation & Site Photography
+          </h4>
+          <div class="row g-3">
+            {% for img in images %}
+            <div class="col-md-6">
+              <div class="rounded-3 overflow-hidden border border-secondary border-opacity-25 bg-black text-center">
+                {% if img.image %}
+                <img src="{{ img.image.url }}" alt="{{ img.caption|default:project.title }}" class="img-fluid" style="height: 240px; width: 100%; object-fit: cover;">
+                {% else %}
+                <div class="d-flex align-items-center justify-content-center bg-dark text-muted" style="height: 240px;">
+                  <i class="bi bi-image fs-1 text-secondary"></i>
+                </div>
+                {% endif %}
+                {% if img.caption %}
+                <div class="p-2 bg-dark text-muted small text-truncate">{{ img.caption }}</div>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Right Column: Project Parameters Sidebar -->
+      <div class="col-lg-4">
+        <div class="position-sticky" style="top: 100px;">
+          <!-- Specifications Summary Card -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-4">
+            <h5 class="font-heading text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+              <i class="bi bi-info-circle text-warning me-2"></i> Project Parameters
+            </h5>
+            <div class="d-flex flex-column gap-3 small">
+              <div>
+                <span class="text-muted d-block">Client / Developer:</span>
+                <span class="text-white fw-bold fs-6">{{ project.client_name|default:"Corporate Partner" }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Location:</span>
+                <span class="text-white fw-bold">{{ project.location }}, {{ project.city }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Sector / Category:</span>
+                <span class="text-white fw-bold">{{ project.project_type }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Elevator Technology:</span>
+                <span class="text-white fw-bold text-warning">{{ project.elevator_type }}</span>
+              </div>
+              <div>
+                <span class="text-muted d-block">Total Installed Units:</span>
+                <span class="text-white fw-bold">{{ project.number_of_elevators }} Elevators</span>
+              </div>
+              {% if project.completion_date %}
+              <div>
+                <span class="text-muted d-block">Commissioning Date:</span>
+                <span class="text-white fw-bold">{{ project.completion_date|date:"F Y" }}</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Direct Engineer Consultation Card -->
+          <div class="p-4 rounded-4 bg-black border border-warning border-opacity-35 text-center">
+            <i class="bi bi-shield-check text-warning display-5 mb-2 d-block"></i>
+            <h5 class="text-white fw-bold mb-1">Planning a Similar Build?</h5>
+            <p class="text-muted small mb-3">Speak with our senior project engineers for laser hoistway drawings and budget estimates.</p>
+            <a href="tel:{{ site_settings.phone }}" class="btn btn-gold w-100 fw-bold mb-2">
+              <i class="bi bi-telephone me-1"></i> Call {{ site_settings.phone }}
+            </a>
+            {% if site_settings.whatsapp %}
+            <a href="https://wa.me/{{ site_settings.whatsapp }}?text=Hello%20Krupa%20Elevator%2C%20I%20am%20interested%20in%20a%20project%20similar%20to%20{{ project.title|urlencode }}." 
+               target="_blank" 
+               rel="noopener" 
+               class="btn btn-outline-success w-100 btn-sm">
+              <i class="bi bi-whatsapp me-1"></i> Inquire on WhatsApp
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Projects Row -->
+    {% if related_projects %}
+    <div class="row mt-5 pt-4 border-top border-secondary border-opacity-25">
+      <div class="col-12 mb-4">
+        <span class="section-tag"><i class="bi bi-link-45deg"></i> Related Installations</span>
+        <h3 class="font-heading text-white fw-bold mb-0">Similar Projects in {{ project.city }} & {{ project.project_type }}</h3>
+      </div>
+      {% for rel in related_projects %}
+      <div class="col-lg-4 col-md-6 mb-3">
+        <div class="feature-card d-flex flex-column justify-content-between h-100 p-4">
+          <div>
+            <div class="d-flex justify-content-between text-warning small mb-2">
+              <span>{{ rel.city }}</span>
+              <span>{{ rel.number_of_elevators }} Units</span>
+            </div>
+            <h5 class="text-white fw-bold mb-2">
+              <a href="{{ rel.get_absolute_url }}" class="text-white text-decoration-none hover-gold">{{ rel.title }}</a>
+            </h5>
+            <p class="text-muted small mb-3">{{ rel.description|truncatewords:18 }}</p>
+          </div>
+          <a href="{{ rel.get_absolute_url }}" class="btn btn-outline-gold btn-sm w-100">
+            View Case Study <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Quote Request Form Anchor -->
+<section id="quoteCTA" class="py-5 bg-black bg-opacity-50 border-top border-secondary border-opacity-10">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">
+            <i class="bi bi-calculator me-1"></i> Engineering Quotation
+          </span>
+          <h2 class="font-heading text-white display-6 fw-bold mb-3">
+            Ready to Begin Your Elevator Project?
+          </h2>
+          <p class="text-secondary fs-5 mb-0">
+            Contact our senior technical estimating team for turnkey elevator proposals and structural shaft CAD designs.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="{% url 'core:home' %}#quote" class="btn btn-gold btn-lg">
+            <i class="bi bi-envelope-check-fill me-1"></i> Request Full Technical Proposal
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

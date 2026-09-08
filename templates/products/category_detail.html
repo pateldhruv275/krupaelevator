@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.meta_title|default:category.name }} | {{ site_settings.company_name|default:"Krupa Elevator" }}{% endblock %}
+
+{% block meta_description %}{{ category.meta_description|default:category.short_description|default:category.description|truncatewords:25 }}{% endblock %}
+
+{% block meta_keywords %}{{ category.meta_keywords|default:"elevator, lift, Krupa Elevator" }}{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner"
+         {% if category.banner_image %}style="background: linear-gradient(90deg, rgba(7,10,18,0.95) 0%, rgba(14,21,38,0.85) 100%), url('{{ category.banner_image.url }}') center/cover;"{% endif %}>
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'products:list' %}">Products</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">{{ category.name }}</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <div class="d-inline-flex align-items-center gap-2 mb-3">
+          <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase">
+            <i class="bi {{ category.icon|default:'bi-layers' }} me-1"></i> Specialized Category
+          </span>
+        </div>
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          {{ category.name }}
+        </h1>
+        {% if category.short_description %}
+        <p class="lead text-light mb-4">
+          {{ category.short_description }}
+        </p>
+        {% endif %}
+        <div class="d-flex gap-3">
+          <a href="#models" class="btn btn-gold">
+            <i class="bi bi-arrow-down-circle me-1"></i> View Available Models ({{ products|length }})
+          </a>
+          <a href="{% url 'core:home' %}#quote" class="btn btn-outline-gold">
+            <i class="bi bi-calculator me-1"></i> Request Quote
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center d-none d-lg-block">
+        <div class="p-4 rounded-4 bg-dark bg-opacity-75 border border-secondary border-opacity-25 d-inline-block">
+          <i class="bi {{ category.icon|default:'bi-building' }} text-warning display-1"></i>
+          <span class="d-block text-white fw-bold mt-2">{{ category.name }}</span>
+          <span class="text-muted small">IS 14665 & EN-81 Compliant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Overview Narrative -->
+{% if category.description %}
+<section class="py-5 bg-dark bg-opacity-25 border-bottom border-secondary border-opacity-10">
+  <div class="container py-2">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="p-4 p-md-5 rounded-4 bg-black bg-opacity-50 border border-secondary border-opacity-25">
+          <h3 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-info-circle text-warning"></i> Engineering Highlights & Standards
+          </h3>
+          <p class="text-secondary fs-5 mb-0" style="line-height: 1.8;">
+            {{ category.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Available Elevator Models Section -->
+<section id="models" class="py-5">
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-secondary border-opacity-25 pb-3">
+      <div>
+        <span class="section-tag"><i class="bi bi-grid-fill"></i> Precision Engineered Range</span>
+        <h2 class="font-heading text-white fw-bold mb-0">{{ category.name }} Models</h2>
+      </div>
+      <span class="text-muted small">Showing {{ products|length }} Configured System{% if products|length != 1 %}s{% endif %}</span>
+    </div>
+
+    {% if products %}
+    <div class="row g-4">
+      {% for prod in products %}
+      <div class="col-lg-6">
+        <div class="feature-card d-flex flex-column justify-content-between h-100 p-4">
+          <div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-black border border-secondary text-warning">
+                <i class="bi bi-patch-check-fill me-1"></i> {{ prod.machine_type|default:"PMSM Gearless" }}
+              </span>
+              {% if prod.featured %}
+              <span class="badge bg-warning text-dark fw-bold"><i class="bi bi-star-fill"></i> Flagship Model</span>
+              {% endif %}
+            </div>
+
+            <h3 class="font-heading text-white fw-bold mb-2">
+              <a href="{{ prod.get_absolute_url }}" class="text-white text-decoration-none hover-gold">
+                {{ prod.name }}
+              </a>
+            </h3>
+
+            <p class="text-muted mb-4">
+              {{ prod.short_description|default:prod.description|truncatewords:28 }}
+            </p>
+
+            <!-- Key Parameters Grid -->
+            <div class="row g-2 mb-4">
+              {% if prod.capacity %}
+              <div class="col-sm-6">
+                <div class="p-2 rounded bg-black border border-secondary border-opacity-10 small">
+                  <span class="text-muted d-block"><i class="bi bi-people text-warning me-1"></i> Rated Capacity</span>
+                  <span class="text-white fw-semibold">{{ prod.capacity }}</span>
+                </div>
+              </div>
+              {% endif %}
+              {% if prod.speed %}
+              <div class="col-sm-6">
+                <div class="p-2 rounded bg-black border border-secondary border-opacity-10 small">
+                  <span class="text-muted d-block"><i class="bi bi-speedometer2 text-warning me-1"></i> Travel Speed</span>
+                  <span class="text-white fw-semibold">{{ prod.speed }}</span>
+                </div>
+              </div>
+              {% endif %}
+              {% if prod.number_of_stops %}
+              <div class="col-sm-6">
+                <div class="p-2 rounded bg-black border border-secondary border-opacity-10 small">
+                  <span class="text-muted d-block"><i class="bi bi-building-up text-warning me-1"></i> Max Travel Stops</span>
+                  <span class="text-white fw-semibold">{{ prod.number_of_stops }}</span>
+                </div>
+              </div>
+              {% endif %}
+              {% if prod.drive_type %}
+              <div class="col-sm-6">
+                <div class="p-2 rounded bg-black border border-secondary border-opacity-10 small">
+                  <span class="text-muted d-block"><i class="bi bi-cpu text-warning me-1"></i> Drive System</span>
+                  <span class="text-white fw-semibold text-truncate d-block">{{ prod.drive_type }}</span>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="pt-3 border-top border-secondary border-opacity-25 d-flex gap-3">
+            <a href="{{ prod.get_absolute_url }}" class="btn btn-gold flex-grow-1">
+              Complete Technical Sheet <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="{% url 'core:home' %}#quote" class="btn btn-outline-gold">
+              <i class="bi bi-calculator"></i> Get Quote
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center py-5 bg-dark bg-opacity-25 rounded-4 border border-secondary border-opacity-25 p-5">
+      <i class="bi bi-info-circle text-warning display-4 mb-3 d-block"></i>
+      <h4 class="text-white fw-bold">Custom Models Under Preparation</h4>
+      <p class="text-muted max-w-500 mx-auto mb-4">
+        Our engineering team builds custom configurations for {{ category.name }}. Contact us directly for blueprints and quote estimates.
+      </p>
+      <a href="{% url 'core:home' %}#contact" class="btn btn-gold">Contact Our Engineering Team</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Other Elevator Categories Navigator -->
+{% if all_categories %}
+<section class="py-5 bg-black bg-opacity-50 border-top border-secondary border-opacity-10">
+  <div class="container py-2">
+    <div class="text-center max-w-700 mx-auto mb-4">
+      <span class="section-tag"><i class="bi bi-compass"></i> Explore Other Solutions</span>
+      <h3 class="font-heading text-white fw-bold mb-0">Browse Other Elevator Categories</h3>
+    </div>
+
+    <div class="row g-3 justify-content-center">
+      {% for other_cat in all_categories|slice:":6" %}
+      <div class="col-lg-4 col-md-6">
+        <a href="{{ other_cat.get_absolute_url }}" class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 d-flex align-items-center gap-3 text-decoration-none text-white hover-card">
+          <div class="p-2 rounded bg-warning bg-opacity-10 text-warning fs-4">
+            <i class="bi {{ other_cat.icon|default:'bi-building' }}"></i>
+          </div>
+          <div>
+            <span class="fw-bold d-block">{{ other_cat.name }}</span>
+            <span class="text-muted small">{{ other_cat.product_count }} Models Configured</span>
+          </div>
+          <i class="bi bi-chevron-right ms-auto text-muted"></i>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

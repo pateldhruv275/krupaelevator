@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.meta_title|default:product.name }} | {{ site_settings.company_name|default:"Krupa Elevator" }}{% endblock %}
+
+{% block meta_description %}{{ product.meta_description|default:product.short_description|default:product.description|truncatewords:25 }}{% endblock %}
+
+{% block meta_keywords %}{{ product.meta_keywords|default:"elevator, lift specification, Krupa Elevator" }}{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumbs & Model Banner -->
+<section class="py-4 bg-black bg-opacity-75 border-bottom border-secondary border-opacity-10">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'products:list' %}">Products</a></li>
+        <li class="breadcrumb-item"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">{{ product.name }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Product Summary Hero Section -->
+<section class="py-5">
+  <div class="container py-2">
+    <div class="row g-5 align-items-start">
+      <!-- Left Column: Visuals & Multi-Image Gallery -->
+      <div class="col-lg-6">
+        <div class="position-sticky" style="top: 100px;">
+          <!-- Main Display Photo -->
+          <div class="rounded-4 overflow-hidden bg-black border border-secondary border-opacity-25 shadow-lg mb-3 position-relative text-center p-4">
+            {% if product.featured_image %}
+              <img id="mainProductPhoto" src="{{ product.featured_image.url }}" alt="{{ product.name }}" class="img-fluid rounded" style="max-height: 420px; object-fit: contain;">
+            {% else %}
+              <div class="py-5 text-warning">
+                <i class="bi {{ category.icon|default:'bi-building' }} display-1"></i>
+                <span class="d-block text-muted small mt-2">Technical Blueprint Model</span>
+              </div>
+            {% endif %}
+
+            {% if product.featured %}
+            <div class="position-absolute top-0 start-0 m-3">
+              <span class="badge bg-warning text-dark fw-bold px-3 py-2 shadow-sm">
+                <i class="bi bi-star-fill me-1"></i> Flagship Model
+              </span>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Thumbnails Strip (if multiple gallery images exist) -->
+          {% if images %}
+          <div class="d-flex gap-2 overflow-x-auto pb-2" style="scrollbar-width: thin;">
+            {% if product.featured_image %}
+            <img src="{{ product.featured_image.url }}" 
+                 alt="{{ product.name }}" 
+                 class="rounded border border-warning" 
+                 style="height: 65px; width: 85px; object-fit: cover; cursor: pointer;"
+                 onclick="document.getElementById('mainProductPhoto').src=this.src;">
+            {% endif %}
+            {% for img in images %}
+            <img src="{{ img.image.url }}" 
+                 alt="{{ img.caption|default:product.name }}" 
+                 class="rounded border border-secondary border-opacity-50" 
+                 style="height: 65px; width: 85px; object-fit: cover; cursor: pointer;"
+                 onclick="document.getElementById('mainProductPhoto').src=this.src;">
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Quality Assurance Guarantee Card -->
+          <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mt-4 d-flex align-items-center gap-3">
+            <i class="bi bi-shield-check text-warning display-6 flex-shrink-0"></i>
+            <div>
+              <span class="text-white fw-bold d-block">Certified Quality & Safety Guarantee</span>
+              <span class="text-muted small">Manufactured to IS 14665 & European EN-81 elevator standards. Backed by Krupa 24/7 AMC response.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Product Title & Engineering Specifications -->
+      <div class="col-lg-6">
+        <div class="d-inline-flex align-items-center gap-2 mb-2">
+          <a href="{{ category.get_absolute_url }}" class="badge bg-black border border-secondary text-warning text-decoration-none">
+            <i class="bi {{ category.icon|default:'bi-layers' }} me-1"></i> {{ category.name }}
+          </a>
+        </div>
+
+        <h1 class="display-5 font-heading text-white fw-bold mb-3">
+          {{ product.name }}
+        </h1>
+
+        <p class="lead text-light mb-4">
+          {{ product.short_description|default:product.description|truncatewords:30 }}
+        </p>
+
+        <!-- Quick Engineering Highlights Matrix -->
+        <div class="card bg-black bg-opacity-75 border-secondary border-opacity-25 p-4 rounded-4 mb-4">
+          <h5 class="text-white fw-bold mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+            <i class="bi bi-sliders text-warning me-2"></i> Technical Specifications At A Glance
+          </h5>
+          <div class="row g-3">
+            {% if product.capacity %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Rated Capacity</span>
+              <span class="text-white fw-bold">{{ product.capacity }}</span>
+            </div>
+            {% endif %}
+            {% if product.speed %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Travel Speed</span>
+              <span class="text-white fw-bold">{{ product.speed }}</span>
+            </div>
+            {% endif %}
+            {% if product.machine_type %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Traction Machine</span>
+              <span class="text-white fw-bold">{{ product.machine_type }}</span>
+            </div>
+            {% endif %}
+            {% if product.drive_type %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Control System</span>
+              <span class="text-white fw-bold">{{ product.drive_type }}</span>
+            </div>
+            {% endif %}
+            {% if product.door_type %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Door Architecture</span>
+              <span class="text-white fw-bold">{{ product.door_type }}</span>
+            </div>
+            {% endif %}
+            {% if product.number_of_stops %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Maximum Travel Stops</span>
+              <span class="text-white fw-bold">{{ product.number_of_stops }}</span>
+            </div>
+            {% endif %}
+            {% if product.pit_depth %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Minimum Pit Depth</span>
+              <span class="text-white fw-bold">{{ product.pit_depth }}</span>
+            </div>
+            {% endif %}
+            {% if product.overhead %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Clear Overhead Clearance</span>
+              <span class="text-white fw-bold">{{ product.overhead }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Action Buttons (Quote & Brochure Download) -->
+        <div class="d-flex flex-wrap gap-3 mb-4">
+          <a href="#quoteSection" class="btn btn-gold btn-lg px-4 flex-grow-1">
+            <i class="bi bi-calculator me-1"></i> Request Engineering Quote
+          </a>
+
+          {% if product.brochure %}
+          <a href="{{ product.brochure.url }}" target="_blank" rel="noopener" class="btn btn-outline-gold btn-lg">
+            <i class="bi bi-file-earmark-pdf-fill me-1"></i> Download Brochure
+          </a>
+          {% else %}
+          <a href="#quoteSection" class="btn btn-outline-gold btn-lg">
+            <i class="bi bi-file-earmark-arrow-down me-1"></i> Request CAD Blueprints
+          </a>
+          {% endif %}
+        </div>
+
+        {% if site_settings.whatsapp %}
+        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-white fw-bold d-block">Have Specific Shaft Dimensions?</span>
+            <span class="text-muted small">Chat directly with a Krupa senior elevator engineer on WhatsApp.</span>
+          </div>
+          <a href="https://wa.me/{{ site_settings.whatsapp }}?text=Hi%20Krupa%20Elevator%2C%20I%20am%20enquiring%20about%20the%20{{ product.name|urlencode }}." 
+             target="_blank" 
+             rel="noopener" 
+             class="btn btn-success btn-sm px-3 fw-bold text-nowrap">
+            <i class="bi bi-whatsapp me-1"></i> Instant Chat
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Detailed In-Depth Sections (Tabs / Structured Blocks) -->
+<section class="py-5 bg-black bg-opacity-50 border-top border-secondary border-opacity-10">
+  <div class="container py-3">
+    <!-- Description Block -->
+    <div class="row mb-5">
+      <div class="col-lg-12">
+        <div class="p-4 p-md-5 rounded-4 bg-dark bg-opacity-75 border border-secondary border-opacity-25">
+          <h3 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-file-text text-warning"></i> Architectural & Engineering Overview
+          </h3>
+          <div class="text-secondary fs-5" style="line-height: 1.8;">
+            {{ product.description|linebreaks }}
+          </div>
+          {% if product.application %}
+          <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
+            <span class="text-warning fw-bold"><i class="bi bi-building-check me-1"></i> Ideal Applications:</span>
+            <span class="text-light ms-2">{{ product.application }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Specifications Table & Safety Features -->
+    <div class="row g-4 mb-5">
+      <!-- Detailed Specs Table -->
+      <div class="col-lg-6">
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 h-100">
+          <h4 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-cpu text-warning"></i> Engineering Specifications Sheet
+          </h4>
+          <div class="table-responsive">
+            <table class="table table-dark table-striped table-bordered border-secondary border-opacity-25 mb-0">
+              <tbody>
+                {% if product.capacity %}
+                <tr><th class="text-muted w-40">Rated Capacity</th><td class="text-white">{{ product.capacity }}</td></tr>
+                {% endif %}
+                {% if product.speed %}
+                <tr><th class="text-muted">Travel Speed</th><td class="text-white">{{ product.speed }}</td></tr>
+                {% endif %}
+                {% if product.machine_type %}
+                <tr><th class="text-muted">Machine Motor</th><td class="text-white">{{ product.machine_type }}</td></tr>
+                {% endif %}
+                {% if product.drive_type %}
+                <tr><th class="text-muted">Drive Controller</th><td class="text-white">{{ product.drive_type }}</td></tr>
+                {% endif %}
+                {% if product.door_type %}
+                <tr><th class="text-muted">Door Configuration</th><td class="text-white">{{ product.door_type }}</td></tr>
+                {% endif %}
+                {% if product.number_of_stops %}
+                <tr><th class="text-muted">Max Floors / Stops</th><td class="text-white">{{ product.number_of_stops }}</td></tr>
+                {% endif %}
+                {% if product.pit_depth %}
+                <tr><th class="text-muted">Pit Depth Required</th><td class="text-white">{{ product.pit_depth }}</td></tr>
+                {% endif %}
+                {% if product.overhead %}
+                <tr><th class="text-muted">Headroom Overhead</th><td class="text-white">{{ product.overhead }}</td></tr>
+                {% endif %}
+                {% if product.power_supply %}
+                <tr><th class="text-muted">Power Input</th><td class="text-white">{{ product.power_supply }}</td></tr>
+                {% endif %}
+                {% for key, val in specs_list %}
+                <tr><th class="text-muted">{{ key }}</th><td class="text-white">{{ val }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Safety Systems & Features Checklist -->
+      <div class="col-lg-6">
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 h-100">
+          <h4 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-shield-check text-warning"></i> Multi-Tier Safety & Core Features
+          </h4>
+          {% if features_list %}
+          <div class="d-flex flex-column gap-3">
+            {% for feature in features_list %}
+            <div class="d-flex align-items-start gap-3 p-2 rounded bg-black bg-opacity-50 border border-secondary border-opacity-10">
+              <i class="bi bi-check-circle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+              <span class="text-light">{{ feature }}</span>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-muted">Standard safety package including ARD, progressive safety clamp, infrared light curtains, and emergency communication.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Cabin Interior & Custom Finishes -->
+    {% if finishes_list %}
+    <div class="row mb-5">
+      <div class="col-lg-12">
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-secondary border-opacity-25">
+          <h4 class="font-heading text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-palette text-warning"></i> Available Cabin Interiors & Decorative Finishes
+          </h4>
+          <p class="text-muted mb-4">
+            Customizable cabin finishes allow architects and interior designers to harmonize the elevator car with the building entrance lobby.
+          </p>
+          <div class="row g-3">
+            {% for finish in finishes_list %}
+            <div class="col-md-4 col-sm-6">
+              <div class="p-3 rounded-3 bg-black border border-warning border-opacity-25 d-flex align-items-center gap-3">
+                <i class="bi bi-gem text-warning fs-4"></i>
+                <span class="text-white fw-medium">{{ finish }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Gallery Section (if additional images exist) -->
+    {% if images %}
+    <div class="row mb-5">
+      <div class="col-lg-12">
+        <h4 class="font-heading text-white fw-bold mb-4 d-flex align-items-center gap-2">
+          <i class="bi bi-images text-warning"></i> {{ product.name }} Photo Gallery
+        </h4>
+        <div class="row g-3">
+          {% for img in images %}
+          <div class="col-md-4 col-sm-6">
+            <div class="rounded-3 overflow-hidden border border-secondary border-opacity-25 bg-black text-center">
+              <img src="{{ img.image.url }}" alt="{{ img.caption|default:product.name }}" class="img-fluid" style="height: 220px; width: 100%; object-fit: cover;">
+              {% if img.caption %}
+              <div class="p-2 bg-dark text-muted small text-truncate">{{ img.caption }}</div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="row mt-4">
+      <div class="col-lg-12 mb-4 border-bottom border-secondary border-opacity-25 pb-2">
+        <span class="section-tag"><i class="bi bi-link-45deg"></i> Similar Solutions</span>
+        <h3 class="font-heading text-white fw-bold mb-0">Related {{ category.name }} Models</h3>
+      </div>
+      {% for rel in related_products %}
+      <div class="col-lg-4 col-md-6 mb-3">
+        <div class="feature-card d-flex flex-column justify-content-between h-100 p-4">
+          <div>
+            <h5 class="text-white fw-bold mb-2">
+              <a href="{{ rel.get_absolute_url }}" class="text-white text-decoration-none hover-gold">{{ rel.name }}</a>
+            </h5>
+            <p class="text-muted small mb-3">{{ rel.short_description|truncatewords:18 }}</p>
+            <div class="d-flex gap-3 text-warning small fw-medium mb-3">
+              <span><i class="bi bi-people"></i> {{ rel.capacity|default:"Custom" }}</span>
+              <span><i class="bi bi-speedometer2"></i> {{ rel.speed|default:"1.0 m/s" }}</span>
+            </div>
+          </div>
+          <a href="{{ rel.get_absolute_url }}" class="btn btn-outline-gold btn-sm w-100">
+            View Details <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Quote Request Form Section Anchor -->
+<section id="quoteSection" class="py-5 bg-black border-top border-secondary border-opacity-25">
+  <div class="container py-3">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-warning border-opacity-35 shadow-lg">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-5">
+              <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">
+                <i class="bi bi-calculator-fill me-1"></i> Instant Quotation
+              </span>
+              <h3 class="font-heading text-white fw-bold mb-3">
+                Request a Custom Quote for {{ product.name }}
+              </h3>
+              <p class="text-muted mb-4">
+                Provide your project site location, building height, and preferred finishes. Our technical sales engineers will prepare a comprehensive proposal within 24 hours.
+              </p>
+              <div class="d-flex flex-column gap-2 small text-muted">
+                <div><i class="bi bi-check2 text-warning me-2"></i> Free site inspection and shaft laser survey</div>
+                <div><i class="bi bi-check2 text-warning me-2"></i> Custom CAD hoistway layout drawings</div>
+                <div><i class="bi bi-check2 text-warning me-2"></i> Transparent factory-direct quotation</div>
+              </div>
+            </div>
+
+            <div class="col-lg-7">
+              <form action="{% url 'core:home' %}#contact" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="elevator_type" value="{{ product.name }}">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label text-light small">Your Name <span class="text-warning">*</span></label>
+                    <input type="text" class="form-control bg-black text-white border-secondary border-opacity-50" placeholder="e.g. Amit Sharma" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-light small">Phone Number <span class="text-warning">*</span></label>
+                    <input type="tel" class="form-control bg-black text-white border-secondary border-opacity-50" placeholder="+91 98765 43210" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-light small">Email Address</label>
+                    <input type="email" class="form-control bg-black text-white border-secondary border-opacity-50" placeholder="name@domain.com">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-light small">City / Location <span class="text-warning">*</span></label>
+                    <input type="text" class="form-control bg-black text-white border-secondary border-opacity-50" placeholder="e.g. Ahmedabad, Surat" required>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label text-light small">Project Requirements / Number of Floors</label>
+                    <textarea class="form-control bg-black text-white border-secondary border-opacity-50" rows="3" placeholder="Specify floor count, pit depth, overhead, or special requirements..."></textarea>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-gold w-100 py-3 fw-bold">
+                      <i class="bi bi-send-fill me-2"></i> Send Quote Request for {{ product.name }}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

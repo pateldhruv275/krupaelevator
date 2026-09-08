@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Krupa Elevator | 24/7 Breakdown & Corporate Head Office{% endblock %}
+
+{% block meta_description %}Get in touch with Krupa Elevator headquarters, regional branch offices, and 24/7 emergency elevator breakdown response teams across Gujarat and Maharashtra.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Contact Us</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 fw-bold">
+            <i class="bi bi-shield-fill-exclamation me-1"></i> 24/7 Emergency Breakdown Available
+          </span>
+          <span class="badge bg-dark border border-secondary text-warning px-3 py-2">
+            <i class="bi bi-geo-alt-fill me-1"></i> Factory &amp; Corporate HQ: Ahmedabad
+          </span>
+        </div>
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          Get In Touch With Krupa Elevator
+        </h1>
+        <p class="lead text-secondary mb-0 max-w-700">
+          Whether you require a new elevator installation consultation, AMC contract renewal, modernization feasibility study, or urgent breakdown assistance, our team is ready to support you.
+        </p>
+      </div>
+
+      <div class="col-lg-4 text-lg-end">
+        <a href="{% url 'enquiries:quote_request' %}" class="btn btn-gold btn-lg shadow">
+          <i class="bi bi-calculator me-1"></i> Request An Official Quotation
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Grid Section -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="row g-5">
+      <!-- Left Column: Contact Channels & Branch Network -->
+      <div class="col-lg-5">
+        <span class="section-tag"><i class="bi bi-building"></i> Communication Channels</span>
+        <h3 class="font-heading text-white fw-bold mb-4">Corporate Headquarters &amp; Helplines</h3>
+
+        <div class="d-flex flex-column gap-3 mb-4">
+          <!-- Office Address -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 d-flex gap-3">
+            <div class="feature-icon-box flex-shrink-0 mb-0">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+              <h5 class="text-white fw-bold mb-1">Corporate Office &amp; Factory</h5>
+              <p class="text-muted small mb-0">{{ site_settings.address }}</p>
+            </div>
+          </div>
+
+          <!-- Phone Lines -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 d-flex gap-3">
+            <div class="feature-icon-box flex-shrink-0 mb-0">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
+            <div>
+              <h5 class="text-white fw-bold mb-1">Sales &amp; Consultation Helplines</h5>
+              <a href="tel:{{ site_settings.phone }}" class="d-block text-warning fw-bold fs-5 text-decoration-none">{{ site_settings.phone }}</a>
+              {% if site_settings.alternate_phone %}
+              <a href="tel:{{ site_settings.alternate_phone }}" class="d-block text-muted small text-decoration-none">Alternate: {{ site_settings.alternate_phone }}</a>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 d-flex gap-3">
+            <div class="feature-icon-box flex-shrink-0 mb-0">
+              <i class="bi bi-envelope-fill"></i>
+            </div>
+            <div>
+              <h5 class="text-white fw-bold mb-1">Official Correspondence</h5>
+              <a href="mailto:{{ site_settings.email }}" class="text-muted text-decoration-none small d-block">{{ site_settings.email }}</a>
+              <span class="text-muted small">Inquiries reviewed by senior engineers daily.</span>
+            </div>
+          </div>
+
+          <!-- 24/7 Breakdown Response Box -->
+          <div class="p-4 rounded-4 bg-black border border-danger border-opacity-40">
+            <div class="d-flex align-items-center gap-3">
+              <i class="bi bi-shield-exclamation text-danger display-5 flex-shrink-0"></i>
+              <div>
+                <h5 class="text-white fw-bold mb-1">24x7 Emergency Elevator Breakdown</h5>
+                <p class="text-muted small mb-2">Dedicated rapid-response technician dispatch for passenger entrapment or critical breakdown.</p>
+                <a href="tel:{{ site_settings.emergency_helpline|default:site_settings.phone }}" class="btn btn-danger btn-sm fw-bold">
+                  <i class="bi bi-telephone-fill me-1"></i> Call 24/7: {{ site_settings.emergency_helpline|default:site_settings.phone }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regional Branch Offices Grid -->
+        <h5 class="font-heading text-white fw-bold mb-3 mt-4">
+          <i class="bi bi-pin-map text-warning me-1"></i> Regional Branch Network
+        </h5>
+        <div class="row g-2">
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+              <span class="text-warning fw-bold d-block small">Ahmedabad (HQ)</span>
+              <span class="text-muted" style="font-size: 0.8rem;">GIDC Engineering Zone</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+              <span class="text-warning fw-bold d-block small">Mumbai</span>
+              <span class="text-muted" style="font-size: 0.8rem;">Andheri East &amp; Worli Hub</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+              <span class="text-warning fw-bold d-block small">Pune</span>
+              <span class="text-muted" style="font-size: 0.8rem;">Hinjewadi Tech Corridor</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+              <span class="text-warning fw-bold d-block small">Surat</span>
+              <span class="text-muted" style="font-size: 0.8rem;">Ring Road Commercial Center</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Contact Form -->
+      <div class="col-lg-7">
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-secondary border-opacity-25 shadow-lg">
+          <div class="mb-4">
+            <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-2">Send A Message</span>
+            <h3 class="font-heading text-white fw-bold mb-1">Direct Customer Enquiry</h3>
+            <p class="text-muted small">Fill out the form below and our technical consulting team will respond within 24 hours.</p>
+          </div>
+
+          <form action="{% url 'enquiries:contact' %}" method="POST" novalidate>
+            {% csrf_token %}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Full Name <span class="text-warning">*</span></label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Contact Phone / Mobile <span class="text-warning">*</span></label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Email Address <span class="text-warning">*</span></label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Company / Firm Name</label>
+                {{ form.company }}
+                {% if form.company.errors %}
+                <div class="text-danger small mt-1">{{ form.company.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">City / Location <span class="text-warning">*</span></label>
+                {{ form.city }}
+                {% if form.city.errors %}
+                <div class="text-danger small mt-1">{{ form.city.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-semibold small">Subject / Purpose</label>
+                {{ form.subject }}
+                {% if form.subject.errors %}
+                <div class="text-danger small mt-1">{{ form.subject.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-12">
+                <label class="form-label text-dark fw-semibold small">Message / Inquiry Details <span class="text-warning">*</span></label>
+                {{ form.message }}
+                {% if form.message.errors %}
+                <div class="text-danger small mt-1">{{ form.message.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-gold w-100 py-3 fw-bold shadow">
+                  <i class="bi bi-send-fill me-2"></i> Send Contact Message
+                </button>
+                <div class="d-flex justify-content-between align-items-center text-muted small mt-3">
+                  <span><i class="bi bi-lock-fill text-warning me-1"></i> Data strictly confidential.</span>
+                  <span><i class="bi bi-shield-check text-warning me-1"></i> 24h SLA Response Time</span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pre-Sales FAQ Accordion -->
+    <div class="row mt-5 pt-4 border-top border-secondary border-opacity-25">
+      <div class="col-12 mb-4">
+        <span class="section-tag"><i class="bi bi-question-circle"></i> Quick Answers</span>
+        <h3 class="font-heading text-white fw-bold mb-0">Frequently Asked Pre-Sales Questions</h3>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-3">
+          <h6 class="text-warning fw-bold mb-2"><i class="bi bi-chevron-right me-1"></i> What is the typical lead time for elevator installation?</h6>
+          <p class="text-muted small mb-0">From final structural drawing approval to on-site testing and handover, custom passenger elevators generally require 6 to 8 weeks depending on floor height and cabin custom finishes.</p>
+        </div>
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-3">
+          <h6 class="text-warning fw-bold mb-2"><i class="bi bi-chevron-right me-1"></i> Can Krupa elevators be installed in buildings with no pit or headroom?</h6>
+          <p class="text-muted small mb-0">Yes! Our MRL and hydraulic home elevator models require minimal pit depth (as low as 200 mm) and zero rooftop machine rooms, making them ideal for existing bungalows.</p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-3">
+          <h6 class="text-warning fw-bold mb-2"><i class="bi bi-chevron-right me-1"></i> Does Krupa provide emergency passenger rescue mechanisms (ARD)?</h6>
+          <p class="text-muted small mb-0">Every Krupa passenger elevator includes an Automatic Rescue Device (ARD) and emergency battery backup that brings the cabin safely to the nearest floor and unlocks doors during power failures.</p>
+        </div>
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 mb-3">
+          <h6 class="text-warning fw-bold mb-2"><i class="bi bi-chevron-right me-1"></i> What AMC plans are available for residential societies?</h6>
+          <p class="text-muted small mb-0">We offer both Comprehensive AMC (covering all spare parts, traction ropes, controllers) and Non-Comprehensive Preventive maintenance packages with 24/7 breakdown call response.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

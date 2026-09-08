@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Completed Elevator Projects & Case Studies | {{ site_settings.company_name|default:"Krupa Elevator" }}{% endblock %}
+
+{% block meta_description %}Explore our portfolio of completed residential, commercial, hospital, and industrial elevator installations across India.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Projects Portfolio</li>
+      </ol>
+    </nav>
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="section-tag"><i class="bi bi-building-check"></i> Proven Track Record</span>
+        <h1 class="display-5 font-heading text-white fw-bold mb-3">
+          Completed Elevator Projects & Case Studies
+        </h1>
+        <p class="text-muted fs-5 mb-0">
+          Discover our installations across residential high-rises, IT corporate parks, multi-speciality medical centers, and heavy manufacturing warehouses.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+        <span class="badge bg-warning text-dark fs-6 px-3 py-2 fw-bold">
+          <i class="bi bi-patch-check-fill me-1"></i> {{ total_count }} Featured Installations
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Bar: City, Project Type, Elevator Type & Search -->
+<section class="py-4 bg-dark bg-opacity-50 border-bottom border-secondary border-opacity-10 sticky-top" style="top: 72px; z-index: 10;">
+  <div class="container">
+    <form method="GET" action="{% url 'projects:list' %}" class="row g-2 align-items-center">
+      <!-- City Filter -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <select name="city" class="form-select form-select-sm bg-black text-white border-secondary">
+          <option value="">All Cities</option>
+          {% for c in available_cities %}
+          <option value="{{ c }}" {% if selected_city == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Project Type Filter -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <select name="project_type" class="form-select form-select-sm bg-black text-white border-secondary">
+          <option value="">All Project Types</option>
+          {% for pt in available_project_types %}
+          <option value="{{ pt }}" {% if selected_project_type == pt %}selected{% endif %}>{{ pt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Elevator Type Filter -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <select name="elevator_type" class="form-select form-select-sm bg-black text-white border-secondary">
+          <option value="">All Elevator Types</option>
+          {% for et in available_elevator_types %}
+          <option value="{{ et }}" {% if selected_elevator_type == et %}selected{% endif %}>{{ et }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Search & Submit -->
+      <div class="col-lg-3 col-md-12 col-sm-6 d-flex gap-2">
+        <input type="text" name="q" value="{{ search_query }}" class="form-control form-control-sm bg-black text-white border-secondary" placeholder="Search projects...">
+        <button type="submit" class="btn btn-gold btn-sm px-3">Filter</button>
+        {% if has_filters %}
+        <a href="{% url 'projects:list' %}" class="btn btn-outline-secondary btn-sm" title="Reset Filters">
+          <i class="bi bi-x-lg"></i>
+        </a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Projects Grid Section -->
+<section class="py-5">
+  <div class="container py-4">
+    {% if has_filters %}
+    <div class="alert alert-dark border-secondary d-flex justify-content-between align-items-center mb-4">
+      <span class="small">
+        Active Filters:
+        {% if selected_city %}<span class="badge bg-black border border-secondary text-warning me-1">City: {{ selected_city }}</span>{% endif %}
+        {% if selected_project_type %}<span class="badge bg-black border border-secondary text-warning me-1">Type: {{ selected_project_type }}</span>{% endif %}
+        {% if selected_elevator_type %}<span class="badge bg-black border border-secondary text-warning me-1">Elevator: {{ selected_elevator_type }}</span>{% endif %}
+        {% if search_query %}<span class="badge bg-black border border-secondary text-warning me-1">Query: {{ search_query }}</span>{% endif %}
+      </span>
+      <a href="{% url 'projects:list' %}" class="text-warning small text-decoration-underline">Reset Filters</a>
+    </div>
+    {% endif %}
+
+    {% if projects %}
+    <div class="row g-4">
+      {% for proj in projects %}
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card d-flex flex-column justify-content-between h-100 p-4">
+          <div>
+            <!-- Top Badges -->
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-black border border-secondary text-warning">
+                <i class="bi bi-geo-alt-fill me-1"></i> {{ proj.city }}
+              </span>
+              <span class="badge bg-dark border border-secondary text-light">
+                {{ proj.number_of_elevators }} Unit{% if proj.number_of_elevators != 1 %}s{% endif %}
+              </span>
+            </div>
+
+            <!-- Visual Thumbnail -->
+            <div class="rounded-3 overflow-hidden bg-black border border-secondary border-opacity-25 mb-3 text-center position-relative">
+              {% if proj.featured_image %}
+                <img src="{{ proj.featured_image.url }}" alt="{{ proj.title }}" class="img-fluid" style="height: 200px; width: 100%; object-fit: cover;">
+              {% else %}
+                <div class="py-5 text-warning">
+                  <i class="bi bi-building display-3"></i>
+                </div>
+              {% endif %}
+              <div class="position-absolute bottom-0 start-0 m-2">
+                <span class="badge bg-black bg-opacity-75 text-warning border border-secondary border-opacity-25 small">
+                  {{ proj.elevator_type }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Title & Location -->
+            <h4 class="text-white fw-bold mb-1">
+              <a href="{{ proj.get_absolute_url }}" class="text-white text-decoration-none hover-gold">
+                {{ proj.title }}
+              </a>
+            </h4>
+
+            {% if proj.client_name %}
+            <span class="text-warning small d-block mb-2">
+              <i class="bi bi-person-check me-1"></i> Client: {{ proj.client_name }}
+            </span>
+            {% endif %}
+
+            <p class="text-muted small mb-3">
+              {{ proj.description|truncatewords:20 }}
+            </p>
+
+            <div class="d-flex justify-content-between text-muted small border-top border-secondary border-opacity-25 pt-2 mb-3">
+              <span><i class="bi bi-diagram-3 me-1"></i> {{ proj.project_type }}</span>
+              {% if proj.completion_date %}
+              <span><i class="bi bi-calendar3 me-1"></i> {{ proj.completion_date|date:"M Y" }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <a href="{{ proj.get_absolute_url }}" class="btn btn-gold btn-sm w-100">
+            View Case Study <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center py-5 my-5 bg-dark bg-opacity-25 rounded-4 border border-secondary border-opacity-25 p-5">
+      <i class="bi bi-building-slash text-warning display-3 mb-3 d-block"></i>
+      <h3 class="text-white fw-bold mb-2">No Projects Found</h3>
+      <p class="text-muted max-w-500 mx-auto mb-4">
+        No completed installations match the selected city, project type, or elevator type filters.
+      </p>
+      <a href="{% url 'projects:list' %}" class="btn btn-gold">
+        <i class="bi bi-arrow-counterclockwise"></i> Clear All Filters
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Custom Project Consultation CTA -->
+<section class="py-5 bg-black bg-opacity-50 border-top border-secondary border-opacity-10">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">
+            <i class="bi bi-calculator me-1"></i> Plan Your Elevator Installation
+          </span>
+          <h2 class="font-heading text-white display-6 fw-bold mb-3">
+            Have an Upcoming Building or Modernization Project?
+          </h2>
+          <p class="text-secondary fs-5 mb-0">
+            Consult our engineering team for preliminary hoistway sizing, passenger traffic simulations, and budget estimation.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="{% url 'core:home' %}#quote" class="btn btn-gold btn-lg">
+            <i class="bi bi-chat-left-dots-fill me-1"></i> Request Engineering Quote
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

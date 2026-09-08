@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Careers at Krupa Elevator | Engineering Jobs & Technical Roles{% endblock %}
+
+{% block meta_description %}Join the engineering team at Krupa Elevator. Discover open positions in elevator installation, PLC electrical commissioning, service AMC, and technical sales.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Careers</li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <span class="badge bg-warning text-dark fw-bold px-3 py-2 text-uppercase mb-3">
+          <i class="bi bi-briefcase me-1"></i> We Are Hiring
+        </span>
+        <h1 class="display-4 font-heading text-white fw-bold mb-3">
+          Build the Future of Vertical Mobility
+        </h1>
+        <p class="lead text-secondary mb-0 max-w-700">
+          Join a forward-thinking team of elevator engineers, field technicians, and CAD designers dedicated to zero-defect safety, German-grade precision, and high-performance engineering.
+        </p>
+      </div>
+
+      <div class="col-lg-4 text-lg-end">
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 d-inline-block text-start">
+          <span class="text-warning display-4 fw-bold d-block">{{ total_vacancies }}</span>
+          <span class="text-white fw-semibold d-block">Open Positions Available</span>
+          <span class="text-muted small">Across Ahmedabad HQ, Mumbai, Pune, and Surat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Company Culture & Perks Strip -->
+<section class="py-5 bg-dark border-bottom border-secondary border-opacity-25">
+  <div class="container">
+    <div class="text-center max-w-600 mx-auto mb-5">
+      <span class="section-tag"><i class="bi bi-heart-pulse"></i> Why Join Krupa Elevator</span>
+      <h3 class="font-heading text-white fw-bold mb-2">Empowering Technical Talent</h3>
+      <p class="text-muted small">We invest in our people through continuous safety certifications, modern tooling, and clear leadership pathways.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="p-4 rounded-4 bg-black border border-secondary border-opacity-20 h-100">
+          <i class="bi bi-shield-check text-warning fs-1 mb-3 d-block"></i>
+          <h5 class="text-white fw-bold mb-2">Zero-Harm Safety</h5>
+          <p class="text-muted small mb-0">Highest safety protocols, full PPE kits, and specialized hoistway harness training.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="p-4 rounded-4 bg-black border border-secondary border-opacity-20 h-100">
+          <i class="bi bi-mortarboard text-warning fs-1 mb-3 d-block"></i>
+          <h5 class="text-white fw-bold mb-2">Continuous Upskilling</h5>
+          <p class="text-muted small mb-0">Hands-on workshops on PMSM gearless technology, regenerative drives, and microprocessor troubleshooting.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="p-4 rounded-4 bg-black border border-secondary border-opacity-20 h-100">
+          <i class="bi bi-graph-up-arrow text-warning fs-1 mb-3 d-block"></i>
+          <h5 class="text-white fw-bold mb-2">Merit-Based Growth</h5>
+          <p class="text-muted small mb-0">Transparent career ladders from site trainee to Senior Project Engineer and Territory Head.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="p-4 rounded-4 bg-black border border-secondary border-opacity-20 h-100">
+          <i class="bi bi-wallet2 text-warning fs-1 mb-3 d-block"></i>
+          <h5 class="text-white fw-bold mb-2">Comprehensive Perks</h5>
+          <p class="text-muted small mb-0">Competitive compensation, performance bonuses, health insurance, and provident fund coverage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Job Vacancies List Section -->
+<section class="py-5" id="openings">
+  <div class="container py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+      <div>
+        <span class="section-tag"><i class="bi bi-person-lines-fill"></i> Current Vacancies</span>
+        <h2 class="font-heading text-white fw-bold mb-0">Open Opportunities</h2>
+      </div>
+
+      <!-- Department Filter Pills -->
+      <div class="d-flex align-items-center gap-2 overflow-x-auto py-1">
+        <a href="{% url 'careers:list' %}#openings" class="btn btn-sm {% if not selected_department %}btn-gold{% else %}btn-outline-secondary text-light{% endif %} rounded-pill px-3 text-nowrap">
+          All Roles
+        </a>
+        {% for dept in available_departments %}
+        <a href="{% url 'careers:list' %}?department={{ dept|urlencode }}#openings" class="btn btn-sm {% if selected_department == dept %}btn-gold{% else %}btn-outline-secondary text-light{% endif %} rounded-pill px-3 text-nowrap">
+          {{ dept }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Job Cards List -->
+    {% if jobs %}
+    <div class="row g-4">
+      {% for job in jobs %}
+      <div class="col-12">
+        <div class="p-4 p-md-5 rounded-4 bg-dark border border-secondary border-opacity-25 hover-border-gold transition shadow-sm">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+              <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <span class="badge bg-warning bg-opacity-15 text-warning border border-warning border-opacity-25 px-3 py-1">
+                  {{ job.department }}
+                </span>
+                <span class="badge bg-black border border-secondary text-light px-3 py-1">
+                  <i class="bi bi-geo-alt text-warning me-1"></i> {{ job.location }}
+                </span>
+                <span class="badge bg-black border border-secondary text-light px-3 py-1">
+                  <i class="bi bi-briefcase text-warning me-1"></i> {{ job.employment_type }}
+                </span>
+                {% if job.is_urgent %}
+                <span class="badge bg-danger text-white px-3 py-1 fw-bold">
+                  <i class="bi bi-lightning-fill me-1"></i> Urgent Hiring
+                </span>
+                {% endif %}
+              </div>
+
+              <h3 class="font-heading text-white fw-bold mb-2">
+                <a href="{{ job.get_absolute_url }}" class="text-white text-decoration-none hover-gold">{{ job.title }}</a>
+              </h3>
+              <p class="text-secondary small mb-3 max-w-700">
+                {{ job.description|truncatewords:30 }}
+              </p>
+
+              <div class="d-flex flex-wrap gap-4 text-muted small">
+                <span><i class="bi bi-award text-warning me-1"></i> Experience: <strong>{{ job.experience_required }}</strong></span>
+                <span><i class="bi bi-people text-warning me-1"></i> Vacancies: <strong>{{ job.number_of_vacancies }} Position{{ job.number_of_vacancies|pluralize }}</strong></span>
+                {% if job.education %}
+                <span><i class="bi bi-book text-warning me-1"></i> Education: <strong>{{ job.education }}</strong></span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="col-lg-4 text-lg-end">
+              <a href="{{ job.get_absolute_url }}" class="btn btn-gold btn-lg px-4 fw-bold">
+                View Position &amp; Apply <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center py-5 bg-dark rounded-4 border border-secondary border-opacity-25 p-5">
+      <i class="bi bi-briefcase text-warning display-1 mb-3 d-block"></i>
+      <h4 class="text-white fw-bold mb-2">No Active Openings in this Department</h4>
+      <p class="text-muted max-w-500 mx-auto mb-4">
+        We do not currently have an open vacancy for this specific filter. You can still email your resume to our talent acquisition team.
+      </p>
+      <a href="{% url 'careers:list' %}" class="btn btn-gold">
+        View All Departments
+      </a>
+    </div>
+    {% endif %}
+
+    <!-- Spontaneous Resume Submission Card -->
+    <div class="p-4 p-md-5 rounded-4 bg-black border border-secondary border-opacity-35 mt-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark px-3 py-1 fw-bold text-uppercase mb-2">General Applications</span>
+          <h3 class="font-heading text-white fw-bold mb-2">Don't See the Perfect Match?</h3>
+          <p class="text-muted small mb-0">
+            We are always looking for passionate electrical engineers, hoistway fitters, and regional service managers. Send your resume directly to our talent acquisition desk at <a href="mailto:careers@krupaelevator.com" class="text-warning text-decoration-none">careers@krupaelevator.com</a>.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="mailto:careers@krupaelevator.com?subject=Spontaneous%20Job%20Application%20-%20Krupa%20Elevator" class="btn btn-outline-gold btn-lg">
+            <i class="bi bi-envelope-paper me-1"></i> Email Your CV Directly
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+

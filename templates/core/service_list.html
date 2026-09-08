@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Elevator Services & AMC Contracts | {{ site_settings.company_name|default:"Krupa Elevator" }}{% endblock %}
+
+{% block meta_description %}Complete lifecycle elevator engineering services: turnkey installation, preventative AMC maintenance, modernization, repair, and 24/7 breakdown support.{% endblock %}
+
+{% block content %}
+
+<section class="page-header-banner">
+  <div class="container py-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Services & AMC</li>
+      </ol>
+    </nav>
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="section-tag"><i class="bi bi-tools"></i> Full Lifecycle Elevator Engineering</span>
+        <h1 class="display-5 font-heading text-white fw-bold mb-3">
+          Comprehensive Elevator Services & Maintenance
+        </h1>
+        <p class="text-muted fs-5 mb-0">
+          From laser-aligned turnkey erection and statutory safety licensing to proactive 24/7 preventative AMC care and energy-saving modernization.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+        <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-6 px-3 py-2">
+          <i class="bi bi-headset me-1"></i> 24/7 Breakdown Hotline: {{ site_settings.emergency_helpline|default:site_settings.phone }}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Grid Section -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="row g-4">
+      {% for s in services %}
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card d-flex flex-column justify-content-between h-100 p-4">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="feature-icon-box mb-0">
+                <i class="bi {{ s.icon|default:'bi-tools' }}"></i>
+              </div>
+              <span class="badge bg-black border border-secondary text-warning small">0{{ forloop.counter }}</span>
+            </div>
+
+            <h3 class="font-heading text-white fw-bold fs-4 mb-3">
+              <a href="{{ s.get_absolute_url }}" class="text-white text-decoration-none hover-gold">
+                {{ s.title }}
+              </a>
+            </h3>
+
+            <p class="text-muted mb-4">
+              {{ s.short_description|default:s.description|truncatewords:24 }}
+            </p>
+
+            {% if s.get_features_list %}
+            <div class="p-3 rounded-3 bg-black bg-opacity-50 border border-secondary border-opacity-10 mb-4 small">
+              <span class="text-warning fw-bold d-block mb-2"><i class="bi bi-check2-circle me-1"></i> Scope of Work:</span>
+              <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
+                {% for feat in s.get_features_list|slice:":3" %}
+                <li class="text-light text-truncate"><i class="bi bi-chevron-right text-warning small me-1"></i> {{ feat }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="pt-3 border-top border-secondary border-opacity-25 d-flex gap-2">
+            <a href="{{ s.get_absolute_url }}" class="btn btn-gold btn-sm flex-grow-1">
+              Service Details <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="{% url 'core:home' %}#contact" class="btn btn-outline-secondary btn-sm text-light" title="Request Proposal">
+              <i class="bi bi-chat-left-dots"></i> Inquire
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">Services information is being updated. Please check back shortly.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 24/7 Breakdown Response Banner -->
+<section class="py-5 bg-black bg-opacity-50 border-top border-secondary border-opacity-10">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-danger text-white px-3 py-2 fw-bold text-uppercase mb-3">
+            <i class="bi bi-lightning-charge-fill me-1"></i> Rapid Emergency Response
+          </span>
+          <h2 class="font-heading text-white display-6 fw-bold mb-3">
+            Elevator Trapped or Experiencing Sudden Breakdown?
+          </h2>
+          <p class="text-secondary fs-5 mb-0">
+            Our specialized passenger rescue technicians are stationed across the city for rapid 30-minute response. Available 24 hours a day, 365 days a year.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <div class="d-flex flex-column gap-3">
+            <a href="tel:{{ site_settings.emergency_helpline|default:site_settings.phone }}" class="btn btn-gold btn-lg">
+              <i class="bi bi-telephone-fill"></i> Call 24/7 Helpline
+            </a>
+            <a href="{% url 'core:home' %}#quote" class="btn btn-outline-gold btn-lg">
+              <i class="bi bi-shield-check"></i> Request AMC Quotation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
